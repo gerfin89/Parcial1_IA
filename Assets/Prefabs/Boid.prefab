@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1598557120226398076}
+  - component: {fileID: 5192919165491184485}
   m_Layer: 0
   m_Name: Boid
   m_TagString: Untagged
@@ -32,6 +33,20 @@ Transform:
   - {fileID: 7033387617181519973}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5192919165491184485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562214909076542763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74b978565541e844aa2d38cb91901107, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoidSteering
+  hunter: {fileID: 902537210762375514, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
+  maxSpeed: 5
 --- !u!1 &5051867925155962571
 GameObject:
   m_ObjectHideFlags: 0

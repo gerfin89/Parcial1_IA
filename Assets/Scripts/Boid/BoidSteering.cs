@@ -5,6 +5,7 @@ public class BoidSteering : MonoBehaviour
 {
     [SerializeField] private Transform hunter;
     [SerializeField] private float maxSpeed;
+    [SerializeField] private float maxSteering;
 
     private Vector3 _velocity; //currentVelocity
 
@@ -24,6 +25,8 @@ public class BoidSteering : MonoBehaviour
         desired *= maxSpeed;
         Vector3 steering = desired - _velocity;
 
-        _velocity = steering;
+        steering = Vector3.ClampMagnitude(steering, maxSteering*Time.deltaTime);
+
+        _velocity += steering;
     }
 }

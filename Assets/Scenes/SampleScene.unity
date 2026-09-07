@@ -222,6 +222,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1809272854}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: _target
+      value: 
+      objectReference: {fileID: 1809272854}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: maxSteering
       value: 5
       objectReference: {fileID: 0}
@@ -230,8 +234,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: currentSteering
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: slowingDistance
-      value: 0.1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -573,6 +581,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1809272854}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: _target
+      value: 
+      objectReference: {fileID: 1809272854}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: maxSteering
       value: 5
       objectReference: {fileID: 0}
@@ -581,8 +593,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: currentSteering
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: slowingDistance
-      value: 0.1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -769,6 +785,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1809272854}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: _target
+      value: 
+      objectReference: {fileID: 1809272854}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: maxSpeed
       value: 5
       objectReference: {fileID: 0}
@@ -785,8 +805,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1809272854}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: currentSteering
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: slowingDistance
-      value: 0.1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7033387617181519973, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -858,6 +882,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1809272854}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: _target
+      value: 
+      objectReference: {fileID: 1809272854}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: maxSteering
       value: 5
       objectReference: {fileID: 0}
@@ -866,8 +894,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: currentSteering
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: slowingDistance
-      value: 0.1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -940,6 +972,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1809272854}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: _target
+      value: 
+      objectReference: {fileID: 1809272854}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: maxSteering
       value: 5
       objectReference: {fileID: 0}
@@ -948,8 +984,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: currentSteering
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: slowingDistance
-      value: 0.1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1027,6 +1067,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1809272854}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: _target
+      value: 
+      objectReference: {fileID: 1809272854}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: maxSteering
       value: 5
       objectReference: {fileID: 0}
@@ -1035,8 +1079,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: currentSteering
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: slowingDistance
-      value: 0.1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

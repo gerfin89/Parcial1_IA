@@ -1,8 +1,10 @@
 using System.IO;
 using UnityEngine;
+using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
-public class BoidSteering : MonoBehaviour
-{
+public class BoidSteering : Agent
+    {
     [SerializeField] private Transform _target;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float maxSteering;
@@ -33,7 +35,7 @@ public class BoidSteering : MonoBehaviour
             case steeringModes.Flee:
                 return Flee(_target.position);
             case steeringModes.Arrive:
-                return Arrive();
+                return Arrive(_target.position);
             case steeringModes.Evade:
                 return Vector3.zero;
             default:
@@ -72,9 +74,9 @@ public class BoidSteering : MonoBehaviour
         return CalculateSteering(-desired);
     }
 
-    private Vector3 Arrive()
+    private Vector3 Arrive(Vector3 target)
     {
-        Vector3 direction = _target.position - transform.position;
+        Vector3 direction = target - transform.position;
         float distance = direction.magnitude;
 
         if (distance < minDistance) 
@@ -89,4 +91,17 @@ public class BoidSteering : MonoBehaviour
         Vector3 desired = direction.normalized * desiredSpeed;
         return CalculateSteering(desired);
     }
+
+   private Vector3 Pursuit(Agent target)
+   {
+        Vector3 dirccion = target - transform.position;
+
+        float distance = dirccion.magnitude;
+
+        var prediction = distance / (maxSpeed + target.velocity.magnitude);
+
+        vector3 futurePosition = target.transform.position + target.velocity * prediction;
+        return Seek(futurePosition);
+    }
+     
 }

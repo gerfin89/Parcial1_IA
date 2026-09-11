@@ -3,15 +3,13 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
 
-public class BoidSteering : Agent
+public class Steering : Agent
     {
     [SerializeField] private Transform _target;
-    [SerializeField] private float maxSpeed;
     [SerializeField] private float maxSteering;
     [SerializeField] private float slowingDistance;
-
     [SerializeField] private float minDistance;
-    private Vector3 _velocity; //currentVelocity
+    [SerializeField] private Agent _targetAgent;
 
     public enum steeringModes { Seek, Flee, Arrive, Evade, Pursuit}
     public steeringModes currentSteering;
@@ -19,7 +17,7 @@ public class BoidSteering : Agent
     void Update()
     {
         _velocity += SteeringVector();
-        _velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
+        //_velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
         transform.position += _velocity * Time.deltaTime;
         
         if(_velocity != Vector3.zero )
@@ -37,11 +35,13 @@ public class BoidSteering : Agent
             case steeringModes.Arrive:
                 return Arrive(_target.position);
             case steeringModes.Evade:
-                return Vector3.zero;
+                return Evade(_targetAgent);
+            case steeringModes.Pursuit:
+                return Pursuit(_targetAgent);
             default:
                 return Vector3.zero;
 
-        }
+        }  
 
     }
 
@@ -92,16 +92,28 @@ public class BoidSteering : Agent
         return CalculateSteering(desired);
     }
 
+    private Vector3 CalculateFuture(Agent target)
+    {
+        Vector3 direccion = target.transform.position - transform.position;
+
+        float distance = direccion.magnitude;
+
+        float prediction = distance / (maxSpeed + target.Velocity.magnitude);
+
+        Vector3 futurePosition = target.transform.position + target.Velocity * prediction;
+        return (futurePosition);
+    }
+
    private Vector3 Pursuit(Agent target)
    {
-        Vector3 dirccion = target - transform.position;
+        var futurePosition = CalculateFuture(target);
+        return Seek (futurePosition);
+   }
 
-        float distance = dirccion.magnitude;
-
-        var prediction = distance / (maxSpeed + target.velocity.magnitude);
-
-        vector3 futurePosition = target.transform.position + target.velocity * prediction;
-        return Seek(futurePosition);
+    private Vector3 Evade (Agent target)
+    {
+        var futurePosition = CalculateFuture(target);
+        return Flee (futurePosition);
     }
      
 }

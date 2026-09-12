@@ -119,6 +119,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &517894267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 517894269}
+  - component: {fileID: 517894270}
+  m_Layer: 0
+  m_Name: GoatPen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &517894269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517894267}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.9644, y: -0, z: 3.88661}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &517894270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517894267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df426b1eb2455d545892bdb4b2b8dec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoatPen
+  height: 30
+  width: 30
+  drawGizmos: 1
 --- !u!1001 &662453812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -179,6 +226,26 @@ PrefabInstance:
       propertyPath: _targetAgent
       value: 
       objectReference: {fileID: 2044506180}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: cohesionRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: alignmentRadius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: currentSteering
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: detectionRadius
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: separationRadius
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -482,10 +549,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2044506178}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d0315306a2845c4eb10bc29bfba2823, type: 3}
+  m_Script: {fileID: 11500000, guid: 50a94ba382726ad498ee58a99af53d0a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Hunter
-  maxSpeed: 0
+  m_EditorClassIdentifier: Assembly-CSharp::FSM_Hunter
+  maxSpeed: 2
   _velocity: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -495,3 +562,4 @@ SceneRoots:
   - {fileID: 1229621881}
   - {fileID: 662453812}
   - {fileID: 1878098401}
+  - {fileID: 517894269}

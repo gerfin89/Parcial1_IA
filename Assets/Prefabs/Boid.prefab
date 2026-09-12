@@ -45,11 +45,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b978565541e844aa2d38cb91901107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoidSteering
-  target: {fileID: 0}
   maxSpeed: 5
+  _target: {fileID: 0}
   maxSteering: 5
   slowingDistance: 0.1
   minDistance: 3
+  _targetAgent: {fileID: 0}
+  separationRadius: 2
+  alignmentRadius: 5
+  cohesionRadius: 3
+  separationWeight: 1.88
+  alignmentWeight: 1.19
+  cohesionWeight: 0.93
+  currentSteering: 5
 --- !u!1 &5051867925155962571
 GameObject:
   m_ObjectHideFlags: 0

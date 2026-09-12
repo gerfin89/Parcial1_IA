@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
 
-public class Steering : Agent
+public class BoidSteering : Agent
     {
     [SerializeField] private Transform _target;
     [SerializeField] private float maxSteering;

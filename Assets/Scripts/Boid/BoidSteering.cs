@@ -28,7 +28,8 @@ public class BoidSteering : Agent
 
     private void Awake()
     {
-        allAgents.Add(this);
+        BoidManager.instance.RegisterBoid(this);
+        //allAgents.Add(this);
         Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0f, Random.Range(1, -1));
         _velocity += randomDirection.normalized * maxSpeed;
        
@@ -222,5 +223,9 @@ public class BoidSteering : Agent
         var futurePosition = CalculateFuture(target);
         return Flee (futurePosition);
     }
-     
+
+    private void OnDestroy()
+    {
+        BoidManager.instance.UnregisterBoid(this);
+    }
 }

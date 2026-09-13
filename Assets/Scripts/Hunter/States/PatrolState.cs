@@ -8,10 +8,12 @@ public class PatrolState : State
     public FSM_Hunter _hunter;
     public PatrolData _data;
     private int currentNode;
-    public PatrolState(FSM_Hunter hunter, PatrolData data, StateMachine stateMachine) : base(stateMachine) 
+    private float _visionRadius;
+    public PatrolState(FSM_Hunter hunter, PatrolData data,float visionRadius, StateMachine stateMachine) : base(stateMachine) 
     {
         _hunter = hunter;
         _data = data;
+        _visionRadius = visionRadius;
     }
     public override void Enter()
     {
@@ -26,7 +28,13 @@ public class PatrolState : State
     public override void Update()
     {
         PatrolLoop();
-        
+
+        Transform boidDetected = _hunter.BoidInVision(_visionRadius)
+;
+        if (boidDetected != null && _hunter.isTbaReady)
+        {
+            stateMachine.ChangeState  (FarmerState.Attack);
+        } 
     }
 
 

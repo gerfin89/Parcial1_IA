@@ -44,4 +44,12 @@ public class AttackState : State
         public float visionRadius;
 
     }
+
+    private void PerformAttack()
+    {
+        _hunter.ResetTba();
+        stateMachine.ChangeState(FarmerState.Patrol);
+    }
+
+    
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1598557120226398076}
   - component: {fileID: 5192919165491184485}
+  - component: {fileID: 4037645104596774498}
   m_Layer: 0
   m_Name: Boid
   m_TagString: Untagged
@@ -59,6 +60,19 @@ MonoBehaviour:
   alignmentWeight: 1.19
   cohesionWeight: 0.93
   currentSteering: 5
+--- !u!114 &4037645104596774498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562214909076542763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec0dbd816c2ccde4aa3c517d46e258ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoidManager
+  allBoids: []
 --- !u!1 &5051867925155962571
 GameObject:
   m_ObjectHideFlags: 0

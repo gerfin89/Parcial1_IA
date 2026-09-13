@@ -5,6 +5,7 @@ public enum FarmerState
 {
     Idle,
     Patrol,
+    Attack,
 
 }
 
@@ -12,6 +13,7 @@ public class FSM_Hunter : Agent
 {
     
     [SerializeField] private PatrolState.PatrolData dataPatrol;
+    [SerializeField] private AttackState.AttackData dataAttack;
 
     private StateMachine stateMachine;
 
@@ -21,15 +23,15 @@ public class FSM_Hunter : Agent
 
         IdleState idleState = new IdleState(stateMachine);
         PatrolState patrolState = new PatrolState(this, dataPatrol, stateMachine);
-        //AttackState attackState = new AttackState();
+        AttackState attackState = new AttackState(this, dataAttack, stateMachine);
        // GatherState gatherState = new GatherState();
 
         stateMachine.RegisterState(FarmerState.Idle,idleState);
         stateMachine.RegisterState(FarmerState.Patrol, patrolState);
-
+        stateMachine.RegisterState(FarmerState.Attack, attackState);
 
         stateMachine.ChangeState(FarmerState.Idle);
-        //stateMachine.ChangeState(attackState);
+        stateMachine.ChangeState(FarmerState.Attack);
        // stateMachine.ChangeState(gatherState);
 
     }

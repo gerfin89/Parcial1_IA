@@ -158,6 +158,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FMS_Hunter
   maxSpeed: 0
+  waiPoints:
+  - {fileID: 0}
 --- !u!1 &6017452936247555109
 GameObject:
   m_ObjectHideFlags: 0

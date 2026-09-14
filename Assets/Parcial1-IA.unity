@@ -144,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 54548412}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.25011, y: 1.27257, z: -2.23835}
+  m_LocalPosition: {x: -7.25011, y: 0, z: -2.23835}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -714,7 +714,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
       propertyPath: maxSpeed
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
       propertyPath: dataAttack.target

@@ -66,10 +66,11 @@ public class AttackState : State
 
     private void ChaseHunter()
     {
+        Vector3 targetPosition = new Vector3(_data.target.position.x, _hunter.transform.position.y,_data.target.position.z);
         Vector3 direction = (_data.target.position - _hunter.transform.position).normalized;
-        Debug.Log("ANTES: " + _hunter.transform.position);
+        //Debug.Log("ANTES: " + _hunter.transform.position);
         _hunter.transform.position += direction * _hunter.MaxSpeed * Time.deltaTime;
-        Debug.Log("DESPUÉS: " + _hunter.transform.position);
+        //Debug.Log("DESPUÉS: " + _hunter.transform.position);
         _hunter.transform.forward = direction;
     }
 

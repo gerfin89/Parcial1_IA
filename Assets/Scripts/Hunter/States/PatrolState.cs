@@ -27,19 +27,22 @@ public class PatrolState : State
 
     public override void Update()
     {
-        PatrolLoop();
-
-        Transform boidDetected = _hunter.BoidInVision(_visionRadius)
-;
-        if (boidDetected != null && _hunter.isTbaReady)
+        
+        Transform boidDetected = _hunter.BoidInVision(_visionRadius);
+        Debug.Log("Boid detectado: " + boidDetected + " | TBA listo: " + _hunter.IsTbaReady);
+        ;
+        if (boidDetected != null && _hunter.IsTbaReady)
         {
             stateMachine.ChangeState  (FarmerState.Attack);
-        } 
+        }
+        PatrolLoop();
+
     }
 
 
     private void PatrolLoop()
     {
+        Debug.Log("PatrolLoop ejecutándose");
         var nextWaypoint = _data.wayPoints[currentNode];
 
         if (Vector3.Distance(nextWaypoint.position, _data.transform.position) <= _data.wayPointCheckDistance)

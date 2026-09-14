@@ -19,7 +19,7 @@ public class FSM_Hunter : Agent
     private StateMachine stateMachine;
 
     private float _tbaTimer;
-    public bool isTbaReady =>_tbaTimer <= 0;
+    public bool IsTbaReady =>_tbaTimer <= 0;
     public void ResetTba() => _tbaTimer = tba;
     
 
@@ -72,5 +72,16 @@ public class FSM_Hunter : Agent
         return inVision;
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, dataAttack.visionRadius);
 
+        Gizmos.color = new Color (1f,0.5f,0.5f);
+        Gizmos.DrawWireSphere(transform.position, dataAttack.rangeAttackRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, dataAttack.meleeAtackRadius);
+
+    }
 }

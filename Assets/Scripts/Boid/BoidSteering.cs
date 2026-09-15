@@ -22,6 +22,9 @@ public class BoidSteering : Agent
         
         if(_velocity != Vector3.zero )
         transform.forward = _velocity;
+
+        if(GetComponent<BoidHealth>().IsDown) return;
+        _velocity += SteeringVector();
     }
 
     private Vector3 SteeringVector()

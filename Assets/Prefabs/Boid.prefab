@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1598557120226398076}
   - component: {fileID: 5192919165491184485}
-  - component: {fileID: 4037645104596774498}
+  - component: {fileID: 7035625999126387902}
   m_Layer: 0
   m_Name: Boid
   m_TagString: Untagged
@@ -52,15 +52,8 @@ MonoBehaviour:
   slowingDistance: 0.1
   minDistance: 3
   _targetAgent: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
-  detectionRadius: 5
-  separationRadius: 2
-  alignmentRadius: 5
-  cohesionRadius: 3
-  separationWeight: 1.88
-  alignmentWeight: 1.19
-  cohesionWeight: 0.93
   currentSteering: 5
---- !u!114 &4037645104596774498
+--- !u!114 &7035625999126387902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -69,10 +62,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 562214909076542763}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec0dbd816c2ccde4aa3c517d46e258ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f9dea51bf0b28a4cb914f2a4b6cb907, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BoidManager
-  allBoids: []
+  m_EditorClassIdentifier: Assembly-CSharp::BoidHealth
+  maxHealth: 0
+  _renderer: {fileID: 8815192812127622015}
+  _damagedColor: {r: 1, g: 0.7529413, b: 0.7960785, a: 1}
+  _originalColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &5051867925155962571
 GameObject:
   m_ObjectHideFlags: 0

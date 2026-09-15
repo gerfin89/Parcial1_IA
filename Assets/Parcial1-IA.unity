@@ -154,6 +154,11 @@ Transform:
   - {fileID: 1088265010}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &281877059 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4605779249918046612, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
+  m_PrefabInstance: {fileID: 1878098401}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &381825858
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -324,15 +329,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -347,11 +352,23 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4037645104596774498, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037645104596774498, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: allBoids.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4037645104596774498, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
       propertyPath: 'allBoids.Array.data[0]'
+      value: 
+      objectReference: {fileID: 849770740}
+    - target: {fileID: 4037645104596774498, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: 'allBoids.Array.data[1]'
+      value: 
+      objectReference: {fileID: 849770740}
+    - target: {fileID: 4037645104596774498, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+      propertyPath: 'allBoids.Array.data[2]'
       value: 
       objectReference: {fileID: 849770740}
     - target: {fileID: 5192919165491184485, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
@@ -807,7 +824,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4605779249918046612, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2044506182}
   m_SourcePrefab: {fileID: 100100000, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
 --- !u!4 &2044506179 stripped
 Transform:
@@ -819,19 +839,36 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
   m_PrefabInstance: {fileID: 1878098401}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 281877059}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81bde4f1eaeafa948855e845d43edc06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FMS_Hunter
+--- !u!114 &2044506182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281877059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec0dbd816c2ccde4aa3c517d46e258ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoidManager
+  allBoids:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1611210538}
   - {fileID: 1229621881}
-  - {fileID: 662453812}
   - {fileID: 1878098401}
   - {fileID: 517894269}
   - {fileID: 54548413}
+  - {fileID: 662453812}

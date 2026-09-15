@@ -31,9 +31,21 @@ public class BoidHealth : MonoBehaviour
 
         if(_currentHealth  <= 0)
         {
-            _isDown = true;
-            if(_renderer != null) 
-                _renderer.material.color = _damagedColor;
+            Down();
         }
+    }
+
+    public void ForceDown()
+    {
+        if (_isDown) return;
+        Down();
+    }
+
+    private void Down()
+    {
+        _isDown = true;
+        _currentHealth = 0;
+        if( _renderer != null ) 
+            _renderer.material.color = _damagedColor;
     }
 }

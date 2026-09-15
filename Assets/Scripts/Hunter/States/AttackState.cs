@@ -45,17 +45,17 @@ public class AttackState : State
         }
         if (distance <= _data.meleeAtackRadius)
         {
-            Debug.Log("ATAQUE MELEE");
-            PerformAttack();
+            
+            PerformAttack(true);
         }
         else if (distance <= _data.rangeAttackRadius)
         {
-            Debug.Log("ATAQUE A DISTANCIA");
-            PerformAttack();
+            
+            PerformAttack(false);
         }
         else
         {
-            Debug.Log("PERSIGUIENDO");
+            
             ChaseHunter();
         }
 
@@ -84,12 +84,15 @@ public class AttackState : State
 
     }
 
-    private void PerformAttack()
+    private void PerformAttack(bool isMelee)
     {
         BoidHealth health = _data.target.GetComponent<BoidHealth>();
         if (health != null)
         {
-            health.TakeDamage(1);
+            if (isMelee) 
+                health.TakeDamage(1);
+            else
+                health.ForceDown();
         }
 
 

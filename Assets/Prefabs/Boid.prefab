@@ -48,10 +48,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoidSteering
   maxSpeed: 5
   _target: {fileID: 902537210762375514, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
-  maxSteering: 5
+  maxSteering: 10
   slowingDistance: 0.1
-  minDistance: 3
+  minDistance: 0.59
   _targetAgent: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
+  detectionRadius: 5
+  separationRadius: 3
+  alignmentRadius: 5
+  cohesionRadius: 7
+  separationWeight: 1.67
+  alignmentWeight: 1.18
+  cohesionWeight: 1.74
   currentSteering: 5
 --- !u!114 &7035625999126387902
 MonoBehaviour:
@@ -65,7 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f9dea51bf0b28a4cb914f2a4b6cb907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoidHealth
-  maxHealth: 0
+  maxHealth: 1
   _renderer: {fileID: 8815192812127622015}
   _damagedColor: {r: 1, g: 0.7529413, b: 0.7960785, a: 1}
   _originalColor: {r: 0, g: 0, b: 0, a: 0}

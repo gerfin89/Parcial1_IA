@@ -86,6 +86,13 @@ public class AttackState : State
 
     private void PerformAttack()
     {
+        BoidHealth health = _data.target.GetComponent<BoidHealth>();
+        if (health != null)
+        {
+            health.TakeDamage(1);
+        }
+
+
         _hunter.ResetTba();
         stateMachine.ChangeState(FarmerState.Patrol);
     }

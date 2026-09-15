@@ -2,7 +2,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
-using System.Collections.Generic;
 
 public class BoidSteering : Agent
     {
@@ -11,48 +10,21 @@ public class BoidSteering : Agent
     [SerializeField] private float slowingDistance;
     [SerializeField] private float minDistance;
     [SerializeField] private Agent _targetAgent;
-    [SerializeField] private float detectionRadius;
 
-    private static List<Agent> allAgents = new List<Agent>();
-    [SerializeField] private float separationRadius;
-    [SerializeField] private float alignmentRadius;
-    [SerializeField] private float cohesionRadius;
-
-    [SerializeField, Range(0f, 3f)] private float separationWeight = 1f; 
-    [SerializeField, Range(0f, 3f)] private float alignmentWeight = 1f;
-    [SerializeField, Range(0f, 3f)] private float cohesionWeight = 1f; 
-
-
-    public enum steeringModes { Seek, Flee, Arrive, Evade, Pursuit,Flocking}
+    public enum steeringModes { Seek, Flee, Arrive, Evade, Pursuit}
     public steeringModes currentSteering;
-
-    private void Awake()
-    {
-        BoidManager.instance.RegisterBoid(this);
-        //allAgents.Add(this);
-        Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0f, Random.Range(1, -1));
-        _velocity += randomDirection.normalized * maxSpeed;
-       
-    }
-
+    
     void Update()
     {
-        if(IsDetection())
-        {
-            currentSteering = steeringModes.Evade;
-        }
-        else
-        {
-            currentSteering = steeringModes.Flocking;
-        }
-
         _velocity += SteeringVector();
-        _velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
+        //_velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
         transform.position += _velocity * Time.deltaTime;
         
         if(_velocity != Vector3.zero )
         transform.forward = _velocity;
-        transform.position = GoatPen.instance.OutOfGoatPen(transform.position);
+
+        if(GetComponent<BoidHealth>().IsDown) return;
+        _velocity += SteeringVector();
     }
 
     private Vector3 SteeringVector()
@@ -69,88 +41,11 @@ public class BoidSteering : Agent
                 return Evade(_targetAgent);
             case steeringModes.Pursuit:
                 return Pursuit(_targetAgent);
-            case steeringModes.Flocking:
-                return Flocking();
             default:
                 return Vector3.zero;
 
         }  
 
-    }
-
-    private bool IsDetection()
-    {
-        if (_targetAgent == null) return false;
-        return Vector3.Distance(transform.position, _targetAgent.transform.position) <= detectionRadius;
-    }
-
-    private Vector3 Flocking()
-    {
-        return CalculateSeparation(allAgents,separationRadius) * separationWeight 
-                + CalculateAlignment(allAgents, alignmentRadius) * alignmentWeight 
-                + CalculateCohesion(allAgents, cohesionRadius) * cohesionWeight;
-    }
-
-    private Vector3 CalculateSeparation(List<Agent> list, float radius)
-    {
-        Vector3 desired =default;
-        int count = 0;  
-
-        foreach(var item in list)
-        {
-            if (item == this) continue;
-
-            if(Vector3.Distance(item.transform.position, transform.position)<= radius)
-            {
-                desired += (item.transform.position - transform.position);
-                count++;
-            }
-           
-        }
-        if (count == 0) return Vector3.zero;
-        desired /= count;
-        return CalculateSteering(-desired.normalized*maxSpeed);
-    }
-
-    private Vector3 CalculateAlignment(List<Agent> list, float radius)
-    {
-        Vector3 desired = default;
-        int count = 0;
-
-        foreach (var item in list)
-        {
-            if (item == this) continue;
-
-            if (Vector3.Distance(item.transform.position, transform.position) <= radius)
-            {
-                desired += item.Velocity;
-                count++;
-            }
-
-        }
-        if (count == 0) return Vector3.zero;
-        desired /= count;
-        return CalculateSteering(desired.normalized * maxSpeed);
-    }
-    private Vector3 CalculateCohesion(List<Agent> list, float radius)
-    {
-        Vector3 desired = default;
-        int count = 0;
-
-        foreach (var item in list)
-        {
-            if (item == this) continue;
-
-            if (Vector3.Distance(item.transform.position, transform.position) <= radius)
-            {
-                desired += item.transform.position;
-                count++;
-            }
-
-        }
-        if (count == 0) return Vector3.zero;
-        desired /= count;
-        return Seek (desired);
     }
 
     private Vector3 CalculateSteering(Vector3 desired )
@@ -223,9 +118,5 @@ public class BoidSteering : Agent
         var futurePosition = CalculateFuture(target);
         return Flee (futurePosition);
     }
-
-    private void OnDestroy()
-    {
-        BoidManager.instance.UnregisterBoid(this);
-    }
+     
 }

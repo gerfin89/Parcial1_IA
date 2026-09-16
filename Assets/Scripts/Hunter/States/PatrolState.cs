@@ -9,11 +9,13 @@ public class PatrolState : State
     public PatrolData _data;
     private int currentNode;
     private float _visionRadius;
-    public PatrolState(FSM_Hunter hunter, PatrolData data,float visionRadius, StateMachine stateMachine) : base(stateMachine) 
+    private float _gatherVisionRadius;
+    public PatrolState(FSM_Hunter hunter, PatrolData data, float visionRadius, float gatherVisionRadius, StateMachine stateMachine) : base(stateMachine) 
     {
         _hunter = hunter;
         _data = data;
         _visionRadius = visionRadius;
+        _gatherVisionRadius = gatherVisionRadius;
     }
     public override void Enter()
     {
@@ -28,13 +30,23 @@ public class PatrolState : State
     public override void Update()
     {
         
-        Transform boidDetected = _hunter.BoidInVision(_visionRadius);
-        Debug.Log("Boid detectado: " + boidDetected + " | TBA listo: " + _hunter.IsTbaReady);
+        Transform fallenBoid = _hunter.FallendBoidInVision(_gatherVisionRadius);
+        //Debug.Log("Boid detectado: " + boidDetected + " | TBA listo: " + _hunter.IsTbaReady);
         ;
+        if (fallenBoid != null)
+        {
+            stateMachine.ChangeState  (FarmerState.Gather);
+            return;
+        }
+
+        Transform boidDetected = _hunter.BoidInVision( _visionRadius);
+
         if (boidDetected != null && _hunter.IsTbaReady)
         {
-            stateMachine.ChangeState  (FarmerState.Attack);
+            stateMachine.ChangeState(FarmerState.Attack);
+            return;
         }
+
         PatrolLoop();
 
     }

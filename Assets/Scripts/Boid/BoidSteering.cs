@@ -30,16 +30,18 @@ public class BoidSteering : Agent
 
     private void Start()
     {
+        Debug.Log("START DEL GOAT NUEVO");
         BoidManager.instance.RegisterBoid(this);
         _health = GetComponent<BoidHealth>();
         //allAgents.Add(this);
-        Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0f, Random.Range(1, -1));
+        Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0f, Random.Range(-1, 1));
         _velocity += randomDirection.normalized * maxSpeed;
 
     }
 
     void Update()
     {
+
         //BoidHealth health = GetComponent<BoidHealth>();
         if (_health != null && _health.IsDown) 
         {
@@ -48,6 +50,7 @@ public class BoidSteering : Agent
         }
         if (IsDetection())
         {
+            Debug.Log("ENTRANDO EN EVADE: " + gameObject.name);
             currentSteering = steeringModes.Evade;
         }
         else
@@ -65,6 +68,9 @@ public class BoidSteering : Agent
         if (_velocity != Vector3.zero)
             transform.forward = _velocity;
         transform.position = GoatPen.instance.OutOfGoatPen(transform.position);
+        Debug.Log("Steering calculado: " + steering +
+    " | Velocity: " + _velocity +
+    " | Boids en manager: " + BoidManager.instance.allBoids.Count);
     }
 
     private Vector3 SteeringVector()
@@ -92,8 +98,24 @@ public class BoidSteering : Agent
 
     private bool IsDetection()
     {
-        if (_targetAgent == null) return false;
-        return Vector3.Distance(transform.position, _targetAgent.transform.position) <= detectionRadius;
+        if (_targetAgent == null)
+        {
+            Debug.Log("GOAT SIN TARGET AGENT: " + gameObject.name);
+            return false;
+        }
+
+        float distance = Vector3.Distance(
+            transform.position,
+            _targetAgent.transform.position
+        );
+
+        Debug.Log(
+            "GOAT: " + gameObject.name +
+            " | Target: " + _targetAgent.name +
+            " | Distancia: " + distance +
+            " | Radio: " + detectionRadius
+        );
+        return distance <= detectionRadius;
     }
 
     private Vector3 Flocking()
@@ -112,9 +134,13 @@ public class BoidSteering : Agent
         {
             if (item == this) continue;
 
+            BoidHealth health = item.GetComponent<BoidHealth>();
+
+            if (health != null && health.IsDown) continue;
+
             if (Vector3.Distance(item.transform.position, transform.position) <= radius)
             {
-                desired += (item.transform.position - transform.position);
+                desired += item.transform.position;
                 count++;
             }
 
@@ -133,9 +159,13 @@ public class BoidSteering : Agent
         {
             if (item == this) continue;
 
+            BoidHealth health = item.GetComponent<BoidHealth>();
+
+            if (health != null && health.IsDown) continue;
+
             if (Vector3.Distance(item.transform.position, transform.position) <= radius)
             {
-                desired += item.Velocity;
+                desired += item.transform.position;
                 count++;
             }
 
@@ -152,6 +182,10 @@ public class BoidSteering : Agent
         foreach (var item in list)
         {
             if (item == this) continue;
+            
+            BoidHealth health = item.GetComponent<BoidHealth>();
+
+            if (health != null && health.IsDown) continue;
 
             if (Vector3.Distance(item.transform.position, transform.position) <= radius)
             {
@@ -232,8 +266,7 @@ public class BoidSteering : Agent
 
     private Vector3 Evade(Agent target)
     {
-        var futurePosition = CalculateFuture(target);
-        return Flee(futurePosition);
+        return Flee(target.transform.position);
     }
 
     private void OnDestroy()

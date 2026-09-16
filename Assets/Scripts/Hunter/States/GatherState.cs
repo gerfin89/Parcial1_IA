@@ -49,7 +49,7 @@ public class GatherState : State
 
         float distance = Vector3.Distance(_hunter.transform.position, _data.target.position);
 
-        if(distance > _data.gatherDistance)
+        if (distance > _data.gatherDistance)
         {
             Vector3 direction = _data.target.position - _hunter.transform.position;
             direction.y = 0;
@@ -60,12 +60,16 @@ public class GatherState : State
         {
             _timer += Time.deltaTime;
 
-            if(_timer >= _data.gatherTime)
+            if (_timer >= _data.gatherTime)
             {
                 Object.Destroy(_data.target.gameObject);
 
                 _data.target = null;
 
+                if (_data.boidSpawner != null)
+                { 
+                _data.boidSpawner.SpawnBoid(); 
+                }
                 stateMachine.ChangeState(FarmerState.Patrol);
             }
         }
@@ -82,7 +86,7 @@ public class GatherState : State
         public float visionRadius;
         public float gatherDistance;
         public float gatherTime;
-
+        public BoidSpawner boidSpawner;
 
 
     }

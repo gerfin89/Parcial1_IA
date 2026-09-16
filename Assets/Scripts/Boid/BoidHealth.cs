@@ -15,7 +15,7 @@ public class BoidHealth : MonoBehaviour
     private void Awake()
     {
         _currentHealth = maxHealth;
-        if (_renderer == null)
+        if (_renderer != null)
         {
             _originalColor = _renderer.material.color;
         }

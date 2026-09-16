@@ -156,10 +156,24 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81bde4f1eaeafa948855e845d43edc06, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FMS_Hunter
-  maxSpeed: 0
-  waiPoints:
-  - {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::FSM_Hunter
+  maxSpeed: 5
+  dataPatrol:
+    wayPoints: []
+    transform: {fileID: 0}
+    wayPointCheckDistance: 4
+  dataAttack:
+    target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+    meleeAtackRadius: 2
+    rangeAttackRadius: 4
+    visionRadius: 6
+  dataGather:
+    target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
+    visionRadius: 6
+    gatherDistance: 0.1
+    gatherTime: 3
+    boidSpawner: {fileID: 0}
+  tba: 3
 --- !u!1 &6017452936247555109
 GameObject:
   m_ObjectHideFlags: 0

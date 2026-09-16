@@ -21,7 +21,7 @@ public class AttackState : State
 
     public override void Enter()
     {
-        Debug.Log("ENTRANDO A ATTACK");
+        //Debug.Log("ENTRANDO A ATTACK");
         _data.target = _hunter.BoidInVision(_data.visionRadius);
         base.Enter();
     }
@@ -97,7 +97,16 @@ public class AttackState : State
 
 
         _hunter.ResetTba();
-        stateMachine.ChangeState(FarmerState.Patrol);
+
+        if(health != null && health.IsDown)
+        {
+            stateMachine.ChangeState(FarmerState.Gather);
+        }
+        else
+        {
+            stateMachine.ChangeState(FarmerState.Patrol);
+        }
+            
     }
 
     

@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using static PatrolState;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class AttackState : State
 {
    
     public FSM_Hunter _hunter;
     public AttackData _data;
-
+    private HunterFeedBack _feedback;
 
 
 
@@ -17,12 +18,19 @@ public class AttackState : State
         _hunter = hunter;
         _data = data;
 
+        _feedback = _hunter.GetComponentInChildren<HunterFeedBack>();
     }
 
     public override void Enter()
     {
         //Debug.Log("ENTRANDO A ATTACK");
         _data.target = _hunter.BoidInVision(_data.visionRadius);
+
+        if (_feedback != null)
+            _feedback.SetState("ATTACK");
+
+
+       
         base.Enter();
     }
        

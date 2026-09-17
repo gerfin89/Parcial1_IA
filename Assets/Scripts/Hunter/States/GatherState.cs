@@ -8,6 +8,7 @@ public class GatherState : State
 {
     public FSM_Hunter _hunter;
     public GatherData _data;
+    private HunterFeedBack _feedback;
 
     private float _timer;
 
@@ -17,11 +18,16 @@ public class GatherState : State
         _hunter = hunter;
         _data = data;
 
+        _feedback = hunter.GetComponentInChildren<HunterFeedBack>();
     }
 
     public override void Enter()
     {
         _timer = 0;
+        if (_feedback != null)
+            _feedback.SetState("GATHER");
+
+
         _data.target = _hunter.FallendBoidInVision(_data.visionRadius);
     }
 

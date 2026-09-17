@@ -49,10 +49,11 @@ MonoBehaviour:
   maxSpeed: 5
   _target: {fileID: 902537210762375514, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
   maxSteering: 5
-  slowingDistance: 0.1
-  minDistance: 1
+  slowingDistance: 1
+  minDistance: 0.1
   _targetAgent: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
   detectionRadius: 10
+  baitDetectionRadius: 8
   separationRadius: 2
   alignmentRadius: 4
   cohesionRadius: 3

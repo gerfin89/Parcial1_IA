@@ -10,6 +10,9 @@ public class PatrolState : State
     private int currentNode;
     private float _visionRadius;
     private float _gatherVisionRadius;
+
+    private float baitTimer;
+    private List<GameObject> spawnedBait = new List<GameObject>(); 
     public PatrolState(FSM_Hunter hunter, PatrolData data, float visionRadius, float gatherVisionRadius, StateMachine stateMachine) : base(stateMachine) 
     {
         _hunter = hunter;
@@ -20,6 +23,7 @@ public class PatrolState : State
     public override void Enter()
     {
         base.Enter();
+        baitTimer = _data.baitSpawnTime;
     }
 
     public override void Exit()
@@ -47,8 +51,33 @@ public class PatrolState : State
             return;
         }
 
+        SpawnBait();
+
         PatrolLoop();
 
+    }
+
+    private void SpawnBait()
+    {
+        baitTimer -= Time.deltaTime;
+
+        if (baitTimer > 0)
+            return;
+
+        spawnedBait.RemoveAll(x => x == null);
+
+        if(spawnedBait.Count >= _data.maxBaits)
+        {
+            baitTimer = _data.baitSpawnTime;
+            return; 
+        }
+
+       // Vector3 randomPos = new Vector3(Random.Range(_data.spawnAreaMin.x, _data.spawnAreaMax.x),0,(Random.Range(_data.spawnAreaMin.z,_data.spawnAreaMax.z)));
+        Debug.Log("BAIT CREADO - HUNTER POS: " + _hunter.transform.position);
+        GameObject bait = Object.Instantiate(_data.baitPrefab,_hunter.transform.position,Quaternion.identity);
+        spawnedBait.Add(bait);
+
+        baitTimer = _data.baitSpawnTime;
     }
 
 
@@ -66,6 +95,8 @@ public class PatrolState : State
 
         _data.transform.position += dir.normalized * _hunter.MaxSpeed * Time.deltaTime;
     }
+
+
     [System.Serializable]
     public class PatrolData 
     {
@@ -73,6 +104,13 @@ public class PatrolState : State
         public Transform transform;
         public float wayPointCheckDistance;
 
+        [Header("Bait")]
+        public GameObject baitPrefab;
+        public float baitSpawnTime = 5f;
+        public int maxBaits = 5;
+
+        public Vector3 spawnAreaMin;
+        public Vector3 spawnAreaMax;
     }
 
 

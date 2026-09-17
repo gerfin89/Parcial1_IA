@@ -12,6 +12,10 @@ public class BoidSteering : Agent
     [SerializeField] private float minDistance;
     [SerializeField] private Agent _targetAgent;
     [SerializeField] private float detectionRadius;
+    [SerializeField] private float baitDetectionRadius = 8f;
+   
+    //[SerializeField] private float baitEatDistance = 1.5f;
+
     
 
     
@@ -19,18 +23,20 @@ public class BoidSteering : Agent
     [SerializeField] private float alignmentRadius;
     [SerializeField] private float cohesionRadius;
 
+
     [SerializeField, Range(0f, 3f)] private float separationWeight = 1f;
     [SerializeField, Range(0f, 3f)] private float alignmentWeight = 1f;
     [SerializeField, Range(0f, 3f)] private float cohesionWeight = 1f;
 
     private BoidHealth _health;
+    
 
     public enum steeringModes { Seek, Flee, Arrive, Evade, Pursuit, Flocking }
     public steeringModes currentSteering;
 
     private void Start()
     {
-        Debug.Log("START DEL GOAT NUEVO");
+        
         BoidManager.instance.RegisterBoid(this);
         _health = GetComponent<BoidHealth>();
         //allAgents.Add(this);
@@ -50,27 +56,49 @@ public class BoidSteering : Agent
         }
         if (IsDetection())
         {
-            Debug.Log("ENTRANDO EN EVADE: " + gameObject.name);
+            
             currentSteering = steeringModes.Evade;
+        }
+        else if (IsBaitDetected())
+        {
+            currentSteering = steeringModes.Arrive;
+            
+
         }
         else
         {
             currentSteering = steeringModes.Flocking;
         }
-        Vector3 steering = SteeringVector();
-        Debug.Log("Steering calculado: " + steering + " | Velocity: " + _velocity + " | Boids en manager: " + BoidManager.instance.allBoids.Count);
+        //Vector3 steering = SteeringVector();
+        //Debug.Log("Steering calculado: " + steering + " | Velocity: " + _velocity + " | Boids en manager: " + BoidManager.instance.allBoids.Count);
 
 
         _velocity += SteeringVector();
         _velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
         transform.position += _velocity * Time.deltaTime;
 
+        if (currentSteering == steeringModes.Arrive && _target != null)
+        {
+            float distanceToBait = Vector3.Distance(transform.position, _target.position);
+            Debug.Log("DISTANCIA AL BAIT: " + distanceToBait + " | DISTANCIA PARA COMER: " + minDistance);
+
+            if (distanceToBait <= minDistance)
+            {
+                Bait bait = _target.GetComponent<Bait>();
+
+                if (bait != null)
+                {
+                    bait.TakeDamage(100);
+                }
+                _health.ForceDown();
+            }
+            
+
+        }
         if (_velocity != Vector3.zero)
             transform.forward = _velocity;
-        transform.position = GoatPen.instance.OutOfGoatPen(transform.position);
-        Debug.Log("Steering calculado: " + steering +
-    " | Velocity: " + _velocity +
-    " | Boids en manager: " + BoidManager.instance.allBoids.Count);
+            transform.position = GoatPen.instance.OutOfGoatPen(transform.position);
+
     }
 
     private Vector3 SteeringVector()
@@ -100,7 +128,6 @@ public class BoidSteering : Agent
     {
         if (_targetAgent == null)
         {
-            Debug.Log("GOAT SIN TARGET AGENT: " + gameObject.name);
             return false;
         }
 
@@ -109,12 +136,7 @@ public class BoidSteering : Agent
             _targetAgent.transform.position
         );
 
-        Debug.Log(
-            "GOAT: " + gameObject.name +
-            " | Target: " + _targetAgent.name +
-            " | Distancia: " + distance +
-            " | Radio: " + detectionRadius
-        );
+        
         return distance <= detectionRadius;
     }
 
@@ -140,7 +162,7 @@ public class BoidSteering : Agent
 
             if (Vector3.Distance(item.transform.position, transform.position) <= radius)
             {
-                desired += item.transform.position;
+                desired += (item.transform.position - transform.position);
                 count++;
             }
 
@@ -269,8 +291,36 @@ public class BoidSteering : Agent
         return Flee(target.transform.position);
     }
 
+    private bool IsBaitDetected()
+    {
+        float minDistance = Mathf.Infinity;
+        Bait detectedBait = null;
+
+        foreach(Bait bait in BaitManager.instance.allBaits)
+        {
+            if (bait == null) continue;
+
+            float distance = Vector3.Distance(transform.position, bait.transform.position);
+
+            if (distance <= baitDetectionRadius && distance < minDistance)
+            {
+                minDistance = distance;
+                detectedBait = bait;
+            }
+        }
+
+        if(detectedBait != null)
+        {
+            _target = detectedBait.transform;
+            return true;
+        }
+        return false;
+    }
+
     private void OnDestroy()
     {
         BoidManager.instance.UnregisterBoid(this);
     }
+
+   
 }

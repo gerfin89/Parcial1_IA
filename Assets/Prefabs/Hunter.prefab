@@ -162,11 +162,16 @@ MonoBehaviour:
     wayPoints: []
     transform: {fileID: 0}
     wayPointCheckDistance: 4
+    baitPrefab: {fileID: 98230039591851437, guid: 42309429fa851e6408534262c6cd5978, type: 3}
+    baitSpawnTime: 2
+    maxBaits: 5
+    spawnAreaMin: {x: 0, y: -1, z: 0}
+    spawnAreaMax: {x: 0, y: 0, z: 0}
   dataAttack:
     target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
     meleeAtackRadius: 2
-    rangeAttackRadius: 4
-    visionRadius: 6
+    rangeAttackRadius: 3
+    visionRadius: 4
   dataGather:
     target: {fileID: 1598557120226398076, guid: bfb02adc7b8071147803cae2bba5ab4c, type: 3}
     visionRadius: 6

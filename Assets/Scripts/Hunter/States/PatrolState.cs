@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using NUnit.Framework;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 
 public class PatrolState : State

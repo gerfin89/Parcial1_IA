@@ -1,7 +1,4 @@
-using System.IO;
 using UnityEngine;
-using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
 using System.Collections.Generic;
 
 public class BoidSteering : Agent
@@ -56,7 +53,8 @@ public class BoidSteering : Agent
         }
         if (IsDetection())
         {
-            
+            float dist = Vector3.Distance(transform.position, _targetAgent.transform.position);
+            Debug.Log(gameObject.name + " EN MODO EVADE | Distancia real: " + dist + " | Radio configurado: " + detectionRadius);
             currentSteering = steeringModes.Evade;
         }
         else if (IsBaitDetected())
@@ -282,7 +280,7 @@ public class BoidSteering : Agent
 
     private Vector3 Pursuit(Agent target)
     {
-        var futurePosition = CalculateFuture(target);
+       var futurePosition = CalculateFuture(target);
         return Seek(futurePosition);
     }
 
@@ -322,5 +320,24 @@ public class BoidSteering : Agent
         BoidManager.instance.UnregisterBoid(this);
     }
 
-   
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, separationRadius);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, cohesionRadius);
+
+        Gizmos.color= Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, alignmentRadius);
+
+        Gizmos.color= Color.black;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+
+        Gizmos.color= Color.white;
+        Gizmos.DrawWireSphere(transform.position, baitDetectionRadius);
+    }
+
+
 }

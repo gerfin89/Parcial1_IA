@@ -4,6 +4,7 @@ using UnityEngine;
 public class HunterFeedBack : MonoBehaviour
 {
    [SerializeField] private TextMeshPro _text;
+   //[SerializeField] private Transform _hunter;
 
 
     public void SetState(string state)
@@ -12,6 +13,7 @@ public class HunterFeedBack : MonoBehaviour
     }
     private void LateUpdate()
     {
-        transform.forward = Camera.main.transform.forward;
+        //transform.position = _hunter.position + Vector3.up * Time.deltaTime;
+        _text.transform.rotation = Camera.main.transform.rotation;
     }
 }

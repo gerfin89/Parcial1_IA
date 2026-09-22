@@ -46,20 +46,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b978565541e844aa2d38cb91901107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoidSteering
-  maxSpeed: 7.73
+  maxSpeed: 8
   _target: {fileID: 902537210762375514, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
-  maxSteering: 33.4
-  slowingDistance: 3
+  maxSteering: 8
+  slowingDistance: 5
   minDistance: 0.1
   _targetAgent: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
-  detectionRadius: 6
+  detectionRadius: 8
   baitDetectionRadius: 4
-  separationRadius: 1
-  alignmentRadius: 3
-  cohesionRadius: 3
-  separationWeight: 2.36
-  alignmentWeight: 1.55
-  cohesionWeight: 0.36
+  separationRadius: 3
+  alignmentRadius: 5
+  cohesionRadius: 4
+  separationWeight: 0.55
+  alignmentWeight: 1.88
+  cohesionWeight: 0.64
   currentSteering: 5
 --- !u!114 &7035625999126387902
 MonoBehaviour:

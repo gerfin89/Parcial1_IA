@@ -167,7 +167,7 @@ MonoBehaviour:
     transform: {fileID: 902537210762375514}
     wayPointCheckDistance: 4
     baitPrefab: {fileID: 98230039591851437, guid: 42309429fa851e6408534262c6cd5978, type: 3}
-    baitSpawnTime: 3
+    baitSpawnTime: 10
     maxBaits: 5
     spawnAreaMin: {x: 0, y: 0, z: 0}
     spawnAreaMax: {x: 0, y: 0, z: 0}

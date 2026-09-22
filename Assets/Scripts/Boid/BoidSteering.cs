@@ -54,7 +54,6 @@ public class BoidSteering : Agent
         if (IsDetection())
         {
             float dist = Vector3.Distance(transform.position, _targetAgent.transform.position);
-            Debug.Log(gameObject.name + " EN MODO EVADE | Distancia real: " + dist + " | Radio configurado: " + detectionRadius);
             currentSteering = steeringModes.Evade;
         }
         else if (IsBaitDetected())
@@ -67,9 +66,8 @@ public class BoidSteering : Agent
         {
             currentSteering = steeringModes.Flocking;
         }
-        //Vector3 steering = SteeringVector();
-        //Debug.Log("Steering calculado: " + steering + " | Velocity: " + _velocity + " | Boids en manager: " + BoidManager.instance.allBoids.Count);
-
+        Vector3 steering = SteeringVector();
+        
 
         _velocity += SteeringVector();
         _velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
@@ -185,7 +183,7 @@ public class BoidSteering : Agent
 
             if (Vector3.Distance(item.transform.position, transform.position) <= radius)
             {
-                desired += item.transform.position;
+                desired += item.Velocity;
                 count++;
             }
 

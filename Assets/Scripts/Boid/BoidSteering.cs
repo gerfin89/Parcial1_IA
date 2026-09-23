@@ -109,8 +109,8 @@ public class BoidSteering : Agent
                 return Arrive(_target.position);
             case steeringModes.Evade:
                 return Evade(_targetAgent);
-            case steeringModes.Pursuit:
-                return Pursuit(_targetAgent);
+           // case steeringModes.Pursuit:
+            //    return Pursuit(_targetAgent);
             case steeringModes.Flocking:
                 return Flocking();
             default:
@@ -284,7 +284,8 @@ public class BoidSteering : Agent
 
     private Vector3 Evade(Agent target)
     {
-        return Flee(target.transform.position);
+        var futurePosition = CalculateFuture(target); 
+        return Flee(futurePosition);
     }
 
     private bool IsBaitDetected()

@@ -46,11 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b978565541e844aa2d38cb91901107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoidSteering
-  maxSpeed: 8
+  maxSpeed: 5
   _target: {fileID: 902537210762375514, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
-  maxSteering: 8
+  maxSteering: 10
   slowingDistance: 5
-  minDistance: 0.1
+  minDistance: 1
   _targetAgent: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
   detectionRadius: 8
   baitDetectionRadius: 4

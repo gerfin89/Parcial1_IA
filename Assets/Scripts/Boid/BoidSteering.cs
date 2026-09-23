@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class BoidSteering : Agent
 {
+    [Header ("Stats")]
     [SerializeField] private Transform _target;
     [SerializeField] private float maxSteering;
     [SerializeField] private float slowingDistance;
@@ -12,10 +13,7 @@ public class BoidSteering : Agent
     [SerializeField] private float baitDetectionRadius = 8f;
    
     //[SerializeField] private float baitEatDistance = 1.5f;
-
-    
-
-    
+            
     [SerializeField] private float separationRadius;
     [SerializeField] private float alignmentRadius;
     [SerializeField] private float cohesionRadius;
@@ -76,7 +74,7 @@ public class BoidSteering : Agent
         if (currentSteering == steeringModes.Arrive && _target != null)
         {
             float distanceToBait = Vector3.Distance(transform.position, _target.position);
-            Debug.Log("DISTANCIA AL BAIT: " + distanceToBait + " | DISTANCIA PARA COMER: " + minDistance);
+            //Debug.Log("DISTANCIA AL BAIT: " + distanceToBait + " | DISTANCIA PARA COMER: " + minDistance);
 
             if (distanceToBait <= minDistance)
             {
@@ -252,16 +250,15 @@ public class BoidSteering : Agent
         float distance = direction.magnitude;
 
         if (distance < minDistance)
-        {
-            return CalculateSteering(Vector3.zero);
-
-        }
+        
+            return (Vector3.zero);        
 
         float targetSpeed = maxSpeed * (distance / slowingDistance);
         float desiredSpeed = Mathf.Min(targetSpeed, maxSpeed);
 
         Vector3 desired = direction.normalized * desiredSpeed;
-        return CalculateSteering(desired);
+        Vector3 steering = CalculateSteering(desired);
+        return CalculateSteering(steering);
     }
 
     private Vector3 CalculateFuture(Agent target)

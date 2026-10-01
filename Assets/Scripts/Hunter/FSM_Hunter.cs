@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
+
 public enum FarmerState
 {
     Idle,
@@ -39,9 +39,7 @@ public class FSM_Hunter : Agent
         stateMachine.RegisterState(FarmerState.Gather, gatherState);
 
         stateMachine.ChangeState(FarmerState.Patrol);
-        //stateMachine.ChangeState(FarmerState.Attack);
-       // stateMachine.ChangeState(gatherState);
-
+        
     }
 
 

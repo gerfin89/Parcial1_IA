@@ -40,7 +40,7 @@ public class PatrolState : State
     {
         
         Transform fallenBoid = _hunter.FallendBoidInVision(_gatherVisionRadius);
-        //Debug.Log("Boid detectado: " + boidDetected + " | TBA listo: " + _hunter.IsTbaReady);
+        
         ;
         if (fallenBoid != null)
         {
@@ -76,9 +76,7 @@ public class PatrolState : State
             baitTimer = _data.baitSpawnTime;
             return; 
         }
-
-       // Vector3 randomPos = new Vector3(Random.Range(_data.spawnAreaMin.x, _data.spawnAreaMax.x),0,(Random.Range(_data.spawnAreaMin.z,_data.spawnAreaMax.z)));
-        Debug.Log("BAIT CREADO - HUNTER POS: " + _hunter.transform.position);
+              
         GameObject bait = Object.Instantiate(_data.baitPrefab,_hunter.transform.position,Quaternion.identity);
         spawnedBait.Add(bait);
 
@@ -88,7 +86,6 @@ public class PatrolState : State
 
     private void PatrolLoop()
     {
-        Debug.Log("PatrolLoop ejecutándose");
         var nextWaypoint = _data.wayPoints[currentNode];
 
         if (Vector3.Distance(nextWaypoint.position, _data.transform.position) <= _data.wayPointCheckDistance)

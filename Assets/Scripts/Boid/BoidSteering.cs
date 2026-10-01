@@ -12,8 +12,7 @@ public class BoidSteering : Agent
     [SerializeField] private float detectionRadius;
     [SerializeField] private float baitDetectionRadius = 8f;
    
-    //[SerializeField] private float baitEatDistance = 1.5f;
-            
+                
     [SerializeField] private float separationRadius;
     [SerializeField] private float alignmentRadius;
     [SerializeField] private float cohesionRadius;
@@ -34,7 +33,6 @@ public class BoidSteering : Agent
         
         BoidManager.instance.RegisterBoid(this);
         _health = GetComponent<BoidHealth>();
-        //allAgents.Add(this);
         Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0f, Random.Range(-1, 1));
         _velocity += randomDirection.normalized * maxSpeed;
 
@@ -43,7 +41,6 @@ public class BoidSteering : Agent
     void Update()
     {
 
-        //BoidHealth health = GetComponent<BoidHealth>();
         if (_health != null && _health.IsDown) 
         {
             _velocity=Vector3.zero;
@@ -74,7 +71,7 @@ public class BoidSteering : Agent
         if (currentSteering == steeringModes.Arrive && _target != null)
         {
             float distanceToBait = Vector3.Distance(transform.position, _target.position);
-            //Debug.Log("DISTANCIA AL BAIT: " + distanceToBait + " | DISTANCIA PARA COMER: " + minDistance);
+            
 
             if (distanceToBait <= minDistance)
             {
@@ -107,8 +104,6 @@ public class BoidSteering : Agent
                 return Arrive(_target.position);
             case steeringModes.Evade:
                 return Evade(_targetAgent);
-           // case steeringModes.Pursuit:
-            //    return Pursuit(_targetAgent);
             case steeringModes.Flocking:
                 return Flocking();
             default:

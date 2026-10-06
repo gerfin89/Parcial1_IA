@@ -131,6 +131,7 @@ public class BoidSteering : Agent
 
     private Vector3 Flocking()
     {
+        _nearbyBoids.RemoveAll(b => b == null);
         return CalculateSeparation(_nearbyBoids, separationRadius) * separationWeight
                 + CalculateAlignment(_nearbyBoids, alignmentRadius) * alignmentWeight
                 + CalculateCohesion(_nearbyBoids, cohesionRadius) * cohesionWeight;
@@ -143,6 +144,7 @@ public class BoidSteering : Agent
 
         foreach (var item in list)
         {
+            if (item == null) continue;
             if (item == this) continue;
 
             BoidHealth health = item.GetComponent<BoidHealth>();
@@ -168,6 +170,7 @@ public class BoidSteering : Agent
 
         foreach (var item in list)
         {
+            if (item == null) continue;
             if (item == this) continue;
 
             BoidHealth health = item.GetComponent<BoidHealth>();
@@ -192,6 +195,7 @@ public class BoidSteering : Agent
 
         foreach (var item in list)
         {
+            if (item == null) continue;
             if (item == this) continue;
             
             BoidHealth health = item.GetComponent<BoidHealth>();

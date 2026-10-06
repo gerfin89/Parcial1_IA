@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public enum FarmerState
 {
@@ -62,7 +63,8 @@ public class FSM_Hunter : Agent
 
         foreach (var boid in _nearbyBoid)
         {
-            if( boid==null ) continue;
+            if ( boid == null) continue;
+            if ( boid==null ) continue;
 
             BoidHealth health = boid.GetComponent<BoidHealth>();
 

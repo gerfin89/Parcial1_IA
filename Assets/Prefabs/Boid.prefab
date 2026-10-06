@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1598557120226398076}
   - component: {fileID: 5192919165491184485}
   - component: {fileID: 7035625999126387902}
+  - component: {fileID: 1912228782271561792}
+  - component: {fileID: 1068916773411905989}
   m_Layer: 0
   m_Name: Boid
   m_TagString: Untagged
@@ -53,10 +55,10 @@ MonoBehaviour:
   minDistance: 1
   _targetAgent: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
   detectionRadius: 8
-  baitDetectionRadius: 4
-  separationRadius: 3
-  alignmentRadius: 5
-  cohesionRadius: 4
+  baitDetectionRadius: 3
+  separationRadius: 2
+  alignmentRadius: 4
+  cohesionRadius: 5
   separationWeight: 0.55
   alignmentWeight: 1.88
   cohesionWeight: 0.64
@@ -77,6 +79,54 @@ MonoBehaviour:
   _renderer: {fileID: 8815192812127622015}
   _damagedColor: {r: 1, g: 0.7529413, b: 0.7960785, a: 1}
   _originalColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!135 &1912228782271561792
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562214909076542763}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3.57
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1068916773411905989
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562214909076542763}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5051867925155962571
 GameObject:
   m_ObjectHideFlags: 0

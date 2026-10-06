@@ -23,7 +23,7 @@ public class BoidSteering : Agent
     [SerializeField, Range(0f, 3f)] private float cohesionWeight = 1f;
 
     private BoidHealth _health;
-    
+    private List<BoidSteering> _nearbyBoids = new List<BoidSteering>();
 
     public enum steeringModes { Seek, Flee, Arrive, Evade, Pursuit, Flocking }
     public steeringModes currentSteering;
@@ -31,7 +31,7 @@ public class BoidSteering : Agent
     private void Start()
     {
         
-        BoidManager.instance.RegisterBoid(this);
+       
         _health = GetComponent<BoidHealth>();
         Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0f, Random.Range(-1, 1));
         _velocity += randomDirection.normalized * maxSpeed;
@@ -131,9 +131,9 @@ public class BoidSteering : Agent
 
     private Vector3 Flocking()
     {
-        return CalculateSeparation(BoidManager.instance.allBoids, separationRadius) * separationWeight
-                + CalculateAlignment(BoidManager.instance.allBoids, alignmentRadius) * alignmentWeight
-                + CalculateCohesion(BoidManager.instance.allBoids, cohesionRadius) * cohesionWeight;
+        return CalculateSeparation(_nearbyBoids, separationRadius) * separationWeight
+                + CalculateAlignment(_nearbyBoids, alignmentRadius) * alignmentWeight
+                + CalculateCohesion(_nearbyBoids, cohesionRadius) * cohesionWeight;
     }
 
     private Vector3 CalculateSeparation(List<BoidSteering> list, float radius)
@@ -274,6 +274,24 @@ public class BoidSteering : Agent
         return Seek(futurePosition);
     }
 
+    private void OnTriggerEnter (Collider other)
+    {
+        BoidSteering otherBoid = other.GetComponent<BoidSteering>();
+        if (otherBoid != null && otherBoid != this)
+        {
+            _nearbyBoids.Add(otherBoid);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        BoidSteering otherBoid = other.GetComponent<BoidSteering>();
+        if (otherBoid != null)
+        {
+            _nearbyBoids.Remove(otherBoid);
+        }
+    }
+
     private Vector3 Evade(Agent target)
     {
         var futurePosition = CalculateFuture(target); 
@@ -306,13 +324,10 @@ public class BoidSteering : Agent
         return false;
     }
 
-    private void OnDestroy()
-    {
-        BoidManager.instance.UnregisterBoid(this);
-    }
+  
 
 
-    private void OnDrawGizmosSelected()
+   /* private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, separationRadius);
@@ -328,7 +343,7 @@ public class BoidSteering : Agent
 
         Gizmos.color= Color.white;
         Gizmos.DrawWireSphere(transform.position, baitDetectionRadius);
-    }
+    }*/
 
 
 }

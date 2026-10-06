@@ -22,6 +22,8 @@ public class FSM_Hunter : Agent
     private float _tbaTimer;
     public bool IsTbaReady =>_tbaTimer <= 0;
     public void ResetTba() => _tbaTimer = tba;
+
+    private List<BoidSteering> _nearbyBoid = new List<BoidSteering>();
     
 
     private void Awake()
@@ -58,15 +60,20 @@ public class FSM_Hunter : Agent
 
         float minDistance = Mathf.Infinity;
 
-        foreach (var Boid in BoidManager.instance.allBoids)
+        foreach (var boid in _nearbyBoid)
         {
-            float dist = Vector3.Distance(transform.position, Boid.transform.position);
+            if( boid==null ) continue;
+
+            BoidHealth health = boid.GetComponent<BoidHealth>();
+
+            if (health != null && health.IsDown) continue;
+            float dist = Vector3.Distance(transform.position, boid.transform.position);
 
             if (dist <= visionRadius && dist < minDistance)
             {
                 minDistance = dist;
 
-                inVision = Boid.transform;
+                inVision = boid.transform;
             }
         }
         return inVision;
@@ -77,24 +84,42 @@ public class FSM_Hunter : Agent
         Transform inVision = null;
         float minDistance = Mathf.Infinity;
 
-        foreach (var Boid in BoidManager.instance.allBoids)
+        foreach (var boid in _nearbyBoid)
         {
-            BoidHealth health = Boid.GetComponent<BoidHealth>();
+            BoidHealth health = boid.GetComponent<BoidHealth>();
             if (health == null || !health.IsDown) continue;
 
-            float dist = Vector3.Distance(transform.position, Boid.transform.position);
+            float dist = Vector3.Distance(transform.position, boid.transform.position);
 
             if (dist <= visionRadius && dist < minDistance)
             {
                 minDistance = dist;
 
-                inVision = Boid.transform;
+                inVision = boid.transform;
             }
             
         }
         return (inVision);
 
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        BoidSteering boid = other.GetComponent<BoidSteering>();
+        if (boid != null)
+        {
+            _nearbyBoid.Add(boid);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        BoidSteering boid = other.GetComponent<BoidSteering>();
+        if (boid != null)
+        {
+            _nearbyBoid.Remove(boid);
+        }
     }
 
     private void OnDrawGizmosSelected()

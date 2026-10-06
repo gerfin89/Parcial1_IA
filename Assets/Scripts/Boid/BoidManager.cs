@@ -3,13 +3,8 @@ using UnityEngine;
 
 public class BoidManager : MonoBehaviour
 {
-    public static BoidManager instance;
-    public List<BoidSteering> allBoids = new List<BoidSteering>();
-    private void Awake()
-    {
-        instance = this;
-    }
-
+   public List<BoidSteering> allBoids = new List<BoidSteering>();
+    
     public void RegisterBoid(BoidSteering boid)
     {
         if (!allBoids.Contains(boid))

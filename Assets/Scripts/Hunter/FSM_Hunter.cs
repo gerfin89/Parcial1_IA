@@ -48,7 +48,8 @@ public class FSM_Hunter : Agent
 
     private void Update()
     {
-        if(_tbaTimer > 0f)
+        _nearbyBoid.RemoveAll(b => b == null);
+        if (_tbaTimer > 0f)
         {
             _tbaTimer -= Time.deltaTime;
         }
@@ -63,7 +64,7 @@ public class FSM_Hunter : Agent
 
         foreach (var boid in _nearbyBoid)
         {
-            if ( boid == null) continue;
+            
             if ( boid==null ) continue;
 
             BoidHealth health = boid.GetComponent<BoidHealth>();
@@ -88,6 +89,7 @@ public class FSM_Hunter : Agent
 
         foreach (var boid in _nearbyBoid)
         {
+            if (boid == null) continue;
             BoidHealth health = boid.GetComponent<BoidHealth>();
             if (health == null || !health.IsDown) continue;
 

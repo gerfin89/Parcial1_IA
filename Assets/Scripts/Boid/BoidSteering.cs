@@ -24,6 +24,7 @@ public class BoidSteering : Agent
 
     private BoidHealth _health;
     private List<BoidSteering> _nearbyBoids = new List<BoidSteering>();
+    private List<Bait> _nearbyBait = new List<Bait>();
 
     public enum steeringModes { Seek, Flee, Arrive, Evade, Pursuit, Flocking }
     public steeringModes currentSteering;
@@ -285,6 +286,12 @@ public class BoidSteering : Agent
         {
             _nearbyBoids.Add(otherBoid);
         }
+
+        Bait bait = other.GetComponent<Bait>();
+        if (bait != null)
+        {
+            _nearbyBait.Add(bait);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -293,6 +300,12 @@ public class BoidSteering : Agent
         if (otherBoid != null)
         {
             _nearbyBoids.Remove(otherBoid);
+        }
+
+        Bait bait = other.GetComponent<Bait>();
+        if (bait != null)
+        {
+            _nearbyBait.Remove(bait);
         }
     }
 
@@ -304,18 +317,19 @@ public class BoidSteering : Agent
 
     private bool IsBaitDetected()
     {
-        float minDistance = Mathf.Infinity;
+        _nearbyBait.RemoveAll(b => b == null);
+        
+        float minDist = Mathf.Infinity;
         Bait detectedBait = null;
 
-        foreach(Bait bait in BaitManager.instance.allBaits)
+        foreach(Bait bait in _nearbyBait)
         {
-            if (bait == null) continue;
-
+            
             float distance = Vector3.Distance(transform.position, bait.transform.position);
 
-            if (distance <= baitDetectionRadius && distance < minDistance)
+            if (distance <= baitDetectionRadius && distance < minDist)
             {
-                minDistance = distance;
+                minDist = distance;
                 detectedBait = bait;
             }
         }

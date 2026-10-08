@@ -54,7 +54,7 @@ MonoBehaviour:
   slowingDistance: 1
   minDistance: 2
   _targetAgent: {fileID: 8278650209837708929, guid: 069c68a8c44735243b93efe9da1f564c, type: 3}
-  detectionRadius: 5
+  detectionRadius: 7
   baitDetectionRadius: 3
   separationRadius: 2
   alignmentRadius: 5
@@ -98,7 +98,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1068916773411905989
 Rigidbody:

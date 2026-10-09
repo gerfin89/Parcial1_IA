@@ -42,7 +42,7 @@ public class BoidSteering : Agent
         _velocity += randomDirection.normalized * maxSpeed;
 
         _stateMachine = new StateMachine();
-        _stateMachine.RegisterState(BoidStateType.Floking, new BoidFlokingState (_stateMachine, this));
+        _stateMachine.RegisterState(BoidStateType.Floking, new BoidFlockingState (_stateMachine, this));
         _stateMachine.RegisterState(BoidStateType.Evade, new BoidEvadeState(_stateMachine, this));
         _stateMachine.RegisterState(BoidStateType.Arrive, new BoidArriveState(_stateMachine, this));
         _stateMachine.RegisterState(BoidStateType.Down, new BoidDownState(_stateMachine, this));

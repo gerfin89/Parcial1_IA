@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+
 
 public class BoidSteering : Agent
 {
@@ -26,111 +28,103 @@ public class BoidSteering : Agent
     private List<BoidSteering> _nearbyBoids = new List<BoidSteering>();
     private List<Bait> _nearbyBait = new List<Bait>();
 
-    public enum steeringModes { Seek, Flee, Arrive, Evade, Pursuit, Flocking }
-    public steeringModes currentSteering;
-
+    
+    
+    [SerializeField] private float evadeExitMultiplier = 1.3f;
+    [SerializeField] private float evadeSteeringMultiplier = 3f;
+    StateMachine _stateMachine;
+    public bool IsDown => _health !=null && _health.IsDown;
     private void Start()
     {
-        
-       
+               
         _health = GetComponent<BoidHealth>();
         Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0f, Random.Range(-1, 1));
         _velocity += randomDirection.normalized * maxSpeed;
+
+        _stateMachine = new StateMachine();
+        _stateMachine.RegisterState(BoidStateType.Floking, new BoidFlokingState (_stateMachine, this));
+        _stateMachine.RegisterState(BoidStateType.Evade, new BoidEvadeState(_stateMachine, this));
+        _stateMachine.RegisterState(BoidStateType.Arrive, new BoidArriveState(_stateMachine, this));
+        _stateMachine.RegisterState(BoidStateType.Down, new BoidDownState(_stateMachine, this));
+        _stateMachine.ChangeState(BoidStateType.Floking);
+
+
 
     }
 
     void Update()
     {
 
-        if (_health != null && _health.IsDown) 
-        {
-            _velocity=Vector3.zero;
-            return;
-        }
-        if (IsDetection())
-        {
-            float dist = Vector3.Distance(transform.position, _targetAgent.transform.position);
-            currentSteering = steeringModes.Evade;
-        }
-        else if (IsBaitDetected())
-        {
-            currentSteering = steeringModes.Arrive;
-            
+       _stateMachine.Update();
+    }
 
-        }
-        else
-        {
-            currentSteering = steeringModes.Flocking;
-        }
-        Vector3 steering = SteeringVector();
-        
+    
 
-        _velocity += SteeringVector();
+    public bool IsThreatDetected (bool alreadyEvading)
+    {
+        if(_targetAgent == null) return false;
+
+        float radius = alreadyEvading ? detectionRadius * evadeExitMultiplier : detectionRadius;
+        return Vector3.Distance(transform.position, _targetAgent.transform.position) <= radius;
+    }
+
+    public bool TryGetBait (out Transform bait)
+    {
+        _nearbyBait.RemoveAll(b => b == null);
+        float minDist = Mathf.Infinity;
+        bait = null;
+
+        foreach (Bait candidate in _nearbyBait)
+        {
+            if (_targetAgent != null)
+            {
+                float baitToHunter = Vector3.Distance(candidate.transform.position, _targetAgent.transform.position);
+                if (baitToHunter <= detectionRadius * evadeExitMultiplier) continue;
+            }
+
+            float distance = Vector3.Distance(transform.position, candidate.transform.position);
+            if (distance < baitDetectionRadius && distance < minDist)
+            {
+                minDist = distance;
+                bait = candidate.transform;
+            }
+        }
+        return bait;
+    }
+    public Vector3 FlokingSteering() => FlokingSteering();
+    public Vector3 EvadeSteering() => Evade(_targetAgent) * evadeSteeringMultiplier;
+    public Vector3 ArriveSteering(Transform bait) => Arrive(bait.position);
+
+    public bool IsAtBait(Transform bait)
+    {
+        return Vector3.Distance(transform.position, bait.position) <= minDistance;
+    }
+    public void EatBait(Transform bait)
+    {
+        Bait component = bait.GetComponent<Bait>();
+        if (component != null) component.TakeDamage(100);
+       
+    }
+
+    public void Sleep()
+    {
+        _velocity = Vector3.zero;
+        if(_health != null) _health.ForceDown();
+    }
+
+    public void Move(Vector3 steering)
+    {
+        _velocity += steering;
         _velocity = Vector3.ClampMagnitude(_velocity, maxSpeed);
         transform.position += _velocity * Time.deltaTime;
 
-        if (currentSteering == steeringModes.Arrive && _target != null)
-        {
-            float distanceToBait = Vector3.Distance(transform.position, _target.position);
-            
-
-            if (distanceToBait <= minDistance)
-            {
-                Bait bait = _target.GetComponent<Bait>();
-
-                if (bait != null)
-                {
-                    bait.TakeDamage(100);
-                }
-                _health.ForceDown();
-            }
-            
-
-        }
         if (_velocity != Vector3.zero)
             transform.forward = _velocity;
-            transform.position = GoatPen.instance.OutOfGoatPen(transform.position);
 
+        transform.position = GoatPen.instance.OutOfGoatPen(transform.position);
     }
-
-    private Vector3 SteeringVector()
-    {
-        switch (currentSteering)
-        {
-            case steeringModes.Seek:
-                return Seek(_target.position);
-            case steeringModes.Flee:
-                return Flee(_target.position);
-            case steeringModes.Arrive:
-                return Arrive(_target.position);
-            case steeringModes.Evade:
-                return Evade(_targetAgent);
-            case steeringModes.Flocking:
-                return Flocking();
-            default:
-                return Vector3.zero;
-
-        }
-
-    }
-
-    private bool IsDetection()
-    {
-        if (_targetAgent == null)
-        {
-            return false;
-        }
-
-        float distance = Vector3.Distance(
-            transform.position,
-            _targetAgent.transform.position
-        );
-
-        
-        return distance <= detectionRadius;
-    }
-
-    private Vector3 Flocking()
+   
+    public Vector3 Flocking()
     {
         _nearbyBoids.RemoveAll(b => b == null);
         return CalculateSeparation(_nearbyBoids, separationRadius) * separationWeight
@@ -315,32 +309,7 @@ public class BoidSteering : Agent
         return Flee(futurePosition);
     }
 
-    private bool IsBaitDetected()
-    {
-        _nearbyBait.RemoveAll(b => b == null);
-        
-        float minDist = Mathf.Infinity;
-        Bait detectedBait = null;
-
-        foreach(Bait bait in _nearbyBait)
-        {
-            
-            float distance = Vector3.Distance(transform.position, bait.transform.position);
-
-            if (distance <= baitDetectionRadius && distance < minDist)
-            {
-                minDist = distance;
-                detectedBait = bait;
-            }
-        }
-
-        if(detectedBait != null)
-        {
-            _target = detectedBait.transform;
-            return true;
-        }
-        return false;
-    }
+    
 
   
 

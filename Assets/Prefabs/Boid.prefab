@@ -62,7 +62,8 @@ MonoBehaviour:
   separationWeight: 0.98
   alignmentWeight: 1.88
   cohesionWeight: 0.64
-  currentSteering: 5
+  evadeExitMultiplier: 1.3
+  evadeSteeringMultiplier: 3
 --- !u!114 &7035625999126387902
 MonoBehaviour:
   m_ObjectHideFlags: 0

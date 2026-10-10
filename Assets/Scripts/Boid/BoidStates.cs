@@ -1,6 +1,6 @@
 using UnityEngine;
 public enum BoidStateType
-{   Floking, 
+{   Flocking, 
     Evade,
     Arrive,
     Down

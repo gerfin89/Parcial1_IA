@@ -23,7 +23,7 @@ public class BoidArriveState : State
 
         if (_bait == null && !_boid.TryGetBait(out _bait))
         {
-            stateMachine.ChangeState(BoidStateType.Floking);
+            stateMachine.ChangeState(BoidStateType.Flocking);
             return;
         }
 

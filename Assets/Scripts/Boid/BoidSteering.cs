@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 
 public class BoidSteering : Agent
 {
     [Header ("Stats")]
-    [SerializeField] private Transform _target;
+    
     [SerializeField] private float maxSteering;
     [SerializeField] private float slowingDistance;
     [SerializeField] private float minDistance;
@@ -26,7 +25,7 @@ public class BoidSteering : Agent
 
     private BoidHealth _health;
     private List<BoidSteering> _nearbyBoids = new List<BoidSteering>();
-    private List<Bait> _nearbyBait = new List<Bait>();
+    private List<Bait> _nearbyBaits = new List<Bait>();
 
     
     
@@ -38,15 +37,15 @@ public class BoidSteering : Agent
     {
                
         _health = GetComponent<BoidHealth>();
-        Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0f, Random.Range(-1, 1));
+        Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
         _velocity += randomDirection.normalized * maxSpeed;
 
         _stateMachine = new StateMachine();
-        _stateMachine.RegisterState(BoidStateType.Floking, new BoidFlockingState (_stateMachine, this));
+        _stateMachine.RegisterState(BoidStateType.Flocking, new BoidFlockingState (_stateMachine, this));
         _stateMachine.RegisterState(BoidStateType.Evade, new BoidEvadeState(_stateMachine, this));
         _stateMachine.RegisterState(BoidStateType.Arrive, new BoidArriveState(_stateMachine, this));
         _stateMachine.RegisterState(BoidStateType.Down, new BoidDownState(_stateMachine, this));
-        _stateMachine.ChangeState(BoidStateType.Floking);
+        _stateMachine.ChangeState(BoidStateType.Flocking);
 
 
 
@@ -70,11 +69,11 @@ public class BoidSteering : Agent
 
     public bool TryGetBait (out Transform bait)
     {
-        _nearbyBait.RemoveAll(b => b == null);
+        _nearbyBaits.RemoveAll(b => b == null);
         float minDist = Mathf.Infinity;
         bait = null;
 
-        foreach (Bait candidate in _nearbyBait)
+        foreach (Bait candidate in _nearbyBaits)
         {
             if (_targetAgent != null)
             {
@@ -89,9 +88,8 @@ public class BoidSteering : Agent
                 bait = candidate.transform;
             }
         }
-        return bait;
+        return bait != null;
     }
-    public Vector3 FlokingSteering() => FlokingSteering();
     public Vector3 EvadeSteering() => Evade(_targetAgent) * evadeSteeringMultiplier;
     public Vector3 ArriveSteering(Transform bait) => Arrive(bait.position);
 
@@ -251,8 +249,7 @@ public class BoidSteering : Agent
         float desiredSpeed = Mathf.Min(targetSpeed, maxSpeed);
 
         Vector3 desired = direction.normalized * desiredSpeed;
-        Vector3 steering = CalculateSteering(desired);
-        return CalculateSteering(steering);
+        return CalculateSteering(desired);
     }
 
     private Vector3 CalculateFuture(Agent target)
@@ -267,12 +264,6 @@ public class BoidSteering : Agent
         return (futurePosition);
     }
 
-    private Vector3 Pursuit(Agent target)
-    {
-       var futurePosition = CalculateFuture(target);
-        return Seek(futurePosition);
-    }
-
     private void OnTriggerEnter (Collider other)
     {
         BoidSteering otherBoid = other.GetComponent<BoidSteering>();
@@ -284,7 +275,7 @@ public class BoidSteering : Agent
         Bait bait = other.GetComponent<Bait>();
         if (bait != null)
         {
-            _nearbyBait.Add(bait);
+            _nearbyBaits.Add(bait);
         }
     }
 
@@ -299,7 +290,7 @@ public class BoidSteering : Agent
         Bait bait = other.GetComponent<Bait>();
         if (bait != null)
         {
-            _nearbyBait.Remove(bait);
+            _nearbyBaits.Remove(bait);
         }
     }
 
@@ -307,14 +298,8 @@ public class BoidSteering : Agent
     {
         var futurePosition = CalculateFuture(target); 
         return Flee(futurePosition);
-    }
-
-    
-
-  
-
-
-   /* private void OnDrawGizmosSelected()
+    } 
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, separationRadius);
@@ -330,7 +315,7 @@ public class BoidSteering : Agent
 
         Gizmos.color= Color.white;
         Gizmos.DrawWireSphere(transform.position, baitDetectionRadius);
-    }*/
+    }
 
 
 }

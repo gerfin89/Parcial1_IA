@@ -17,7 +17,7 @@ public class PatrolState : State
         _data = data;
         _visionRadius = visionRadius;
         _gatherVisionRadius = gatherVisionRadius;
-        _feedback = hunter.GetComponentInChildren<HunterFeedBack>();
+       
     }
     public override void Enter()
     {

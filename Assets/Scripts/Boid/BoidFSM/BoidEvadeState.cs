@@ -12,7 +12,7 @@ public class BoidEvadeState : State
     public override void Update()
     {
         if (_boid.IsDown) { stateMachine.ChangeState(BoidStateType.Down); return; }
-        if (!_boid.IsThreatDetected(true)) { stateMachine.ChangeState(BoidStateType.Floking); return; }
+        if (!_boid.IsThreatDetected(true)) { stateMachine.ChangeState(BoidStateType.Flocking); return; }
 
         _boid.Move(_boid.EvadeSteering());
     }

@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using static PatrolState;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
+
 
 public class AttackState : State
 {
@@ -23,14 +21,8 @@ public class AttackState : State
 
     public override void Enter()
     {
-        //Debug.Log("ENTRANDO A ATTACK");
-        _data.target = _hunter.BoidInVision(_data.visionRadius);
-
-        if (_feedback != null)
-            _feedback.SetState("ATTACK");
-
-
-       
+       _data.target = _hunter.BoidInVision(_data.visionRadius);
+                       
         base.Enter();
     }
        
@@ -76,9 +68,9 @@ public class AttackState : State
     {
         Vector3 targetPosition = new Vector3(_data.target.position.x, _hunter.transform.position.y,_data.target.position.z);
         Vector3 direction = (_data.target.position - _hunter.transform.position).normalized;
-        //Debug.Log("ANTES: " + _hunter.transform.position);
+        
         _hunter.transform.position += direction * _hunter.MaxSpeed * Time.deltaTime;
-        //Debug.Log("DESPUÉS: " + _hunter.transform.position);
+        
         _hunter.transform.forward = direction;
     }
 

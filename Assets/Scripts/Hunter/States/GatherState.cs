@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using static PatrolState;
 
@@ -15,17 +14,11 @@ public class GatherState : State
     {
         _hunter = hunter;
         _data = data;
-
-        _feedback = hunter.GetComponentInChildren<HunterFeedBack>();
     }
 
     public override void Enter()
     {
         _timer = 0;
-        if (_feedback != null)
-            _feedback.SetState("GATHER");
-
-
         _data.target = _hunter.FallendBoidInVision(_data.visionRadius);
     }
 

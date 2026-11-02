@@ -64,9 +64,9 @@ MonoBehaviour:
   alignmentRadius: 5
   cohesionRadius: 5
   goatPen: {fileID: 0}
-  separationWeight: 2.17
+  separationWeight: 1.55
   alignmentWeight: 1
-  cohesionWeight: 1
+  cohesionWeight: 0.45
   evadeExitMultiplier: 1.3
   evadeSteeringMultiplier: 3
 --- !u!114 &7035625999126387902

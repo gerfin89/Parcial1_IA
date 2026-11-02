@@ -22,6 +22,7 @@ public class PatrolState : State
     {
         base.Enter();
         _hunter.ChangeColor(Color.blue);
+        _hunter.UpdateStateIcon(FarmerState.Patrol);
         baitTimer = _data.baitSpawnTime;
                        
     }
@@ -86,13 +87,22 @@ public class PatrolState : State
         if (Vector3.Distance(nextWaypoint.position, _data.transform.position) <= _data.wayPointCheckDistance)
         {
             currentNode = currentNode + 1 < _data.wayPoints.Count ? currentNode + 1 : 0;
+            nextWaypoint = _data.wayPoints[currentNode];
         }
 
         var dir = nextWaypoint.position - _data.transform.position;
 
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(dir);
+
+            _data.transform.rotation = Quaternion.Slerp(_data.transform.rotation,targetRotation,8f * Time.deltaTime);
+        }
+
         _data.transform.position += dir.normalized * _hunter.MaxSpeed * Time.deltaTime;
     }
-
 
     [System.Serializable]
     public class PatrolData 

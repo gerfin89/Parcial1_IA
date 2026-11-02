@@ -28,6 +28,16 @@ public class FSM_Hunter : Agent
     [Header("UI Stamina")]
     [SerializeField] private Slider staminaBar;
 
+    [Header("Hunter State Icons")]
+    [SerializeField] private Image stateIcon;
+    [SerializeField] private Sprite patrolIcon;
+    [SerializeField] private Sprite attackIcon;
+    [SerializeField] private Sprite gatherIcon;
+    [SerializeField] private Sprite restIcon;
+
+    [Header("Hunter Projectile")]
+    [SerializeField] private HunterProjectile projectilePrefab;
+
     [Header("Límit scenary")]
     [SerializeField] private GoatPen goatPen;
 
@@ -122,6 +132,52 @@ public class FSM_Hunter : Agent
         }
 
         _previousPosition = transform.position;
+    }
+
+    public void UpdateStateIcon(FarmerState state)
+    {
+        if (stateIcon == null) return;
+
+        switch (state)
+        {
+            case FarmerState.Patrol:
+                stateIcon.sprite = patrolIcon;
+                break;
+
+            case FarmerState.Attack:
+                stateIcon.sprite = attackIcon;
+                break;
+
+            case FarmerState.Gather:
+                stateIcon.sprite = gatherIcon;
+                break;
+
+            case FarmerState.Rest:
+                stateIcon.sprite = restIcon;
+                break;
+
+            default:
+                stateIcon.sprite = null;
+                break;
+        }
+
+        stateIcon.enabled = stateIcon.sprite != null;
+    }
+
+    public void ShootProjectile(Transform target)
+    {
+        if (projectilePrefab == null || target == null)
+            return;
+
+        Vector3 spawnPosition = transform.position + Vector3.up * 1.2f;
+
+        HunterProjectile projectile = Instantiate(
+            projectilePrefab,
+            spawnPosition,
+            Quaternion.identity
+        );
+
+        projectile.Initialize(target);
     }
 
     public Transform BoidInVision(float visionRadius)

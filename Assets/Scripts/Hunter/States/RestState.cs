@@ -12,6 +12,7 @@ public class RestState : State
     public override void Enter()
     {
         _hunter.ChangeColor(Color.yellow);
+        _hunter.UpdateStateIcon(FarmerState.Rest);
         base.Enter();
 
     }

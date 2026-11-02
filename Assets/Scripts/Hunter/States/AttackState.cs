@@ -36,6 +36,7 @@ public class AttackState : State
                 _targetBoundaryCrossings = boid.BoundaryCrossings;
             }
         }
+        _hunter.UpdateStateIcon(FarmerState.Attack);
         _hunter.ChangeColor(Color.red);        
     }
 
@@ -182,20 +183,23 @@ public class AttackState : State
     private void PerformAttack(bool isMelee)
     {
         if (!_hunter.IsTbaReady) return;
+
         BoidHealth health = _data.target.GetComponent<BoidHealth>();
+
         if (health != null)
         {
-            if (isMelee) 
+            if (isMelee)
+            {
                 health.TakeDamage(2);
+            }
             else
-                health.TakeDamage(1);
+            {
+                _hunter.ShootProjectile(_data.target);
+            }
         }
 
-
         _hunter.ResetTba();
-                   
-            
     }
 
-    
+
 }

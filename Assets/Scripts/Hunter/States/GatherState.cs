@@ -18,6 +18,7 @@ public class GatherState : State
     {
         _timer = 0;
         _data.target = _hunter.FallendBoidInVision(_data.visionRadius);
+        _hunter.UpdateStateIcon(FarmerState.Gather);
         _hunter.ChangeColor(Color.cyan);
     }
 

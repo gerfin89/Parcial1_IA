@@ -34,30 +34,21 @@ public class PatrolState : State
 
     public override void Update()
     {
-        
-        Transform fallenBoid = _hunter.FallendBoidInVision(_gatherVisionRadius);
-        
-        ;
-        if (fallenBoid != null)
-        {
-            stateMachine.ChangeState  (FarmerState.Gather);
-            return;
-        }
-
-        Transform boidDetected = _hunter.BoidInVision( _visionRadius);
-
-        if (boidDetected != null && _hunter.IsTbaReady)
-        {
-            stateMachine.ChangeState(FarmerState.Attack);
-            return;
-        }
-
+        if (CheckFallenBoids()) return;
+        if (CheckActiveBoids()) return;
         SpawnBait();
-
         PatrolLoop();
-
     }
+    private bool CheckFallenBoids()
+    {
+        Transform fallenBoid = _hunter.FallendBoidInVision(_gatherVisionRadius);
 
+        if (fallenBoid == null)
+            return false;
+
+        stateMachine.ChangeState(FarmerState.Gather);
+        return true;
+    }
     private void SpawnBait()
     {
         baitTimer -= Time.deltaTime;
@@ -65,45 +56,66 @@ public class PatrolState : State
         if (baitTimer > 0)
             return;
 
-        spawnedBait.RemoveAll(x => x == null);
-
-        if(spawnedBait.Count >= _data.maxBaits)
+        if (HasReachedBaitLimit())
         {
             baitTimer = _data.baitSpawnTime;
-            return; 
+            return;
         }
-              
+
         GameObject bait = Object.Instantiate(_data.baitPrefab,_hunter.transform.position,Quaternion.identity);
         spawnedBait.Add(bait);
 
         baitTimer = _data.baitSpawnTime;
     }
+    private bool HasReachedBaitLimit()
+    {
+        spawnedBait.RemoveAll(x => x == null);
 
-
+        return spawnedBait.Count >= _data.maxBaits;
+    }
     private void PatrolLoop()
     {
-        var nextWaypoint = _data.wayPoints[currentNode];
+        Transform nextWaypoint = GetNextWaypoint();
+
+        Vector3 dir = nextWaypoint.position - _data.transform.position;
+        dir.y = 0f;
+
+        RotateTowardsWaypoint(dir);
+        MoveTowardsWaypoint(dir);
+    }
+    private Transform GetNextWaypoint()
+    {
+        Transform nextWaypoint = _data.wayPoints[currentNode];
 
         if (Vector3.Distance(nextWaypoint.position, _data.transform.position) <= _data.wayPointCheckDistance)
         {
-            currentNode = currentNode + 1 < _data.wayPoints.Count ? currentNode + 1 : 0;
+            currentNode = currentNode + 1 < _data.wayPoints.Count ? currentNode + 1: 0;
             nextWaypoint = _data.wayPoints[currentNode];
         }
-
-        var dir = nextWaypoint.position - _data.transform.position;
-
-        dir.y = 0f;
-
-        if (dir.sqrMagnitude > 0.001f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(dir);
-
-            _data.transform.rotation = Quaternion.Slerp(_data.transform.rotation,targetRotation,8f * Time.deltaTime);
-        }
-
-        _data.transform.position += dir.normalized * _hunter.MaxSpeed * Time.deltaTime;
+        return nextWaypoint;
     }
+    private void RotateTowardsWaypoint(Vector3 direction)
+    {
+        if (direction.sqrMagnitude <= 0.001f)
+            return;
 
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        _data.transform.rotation = Quaternion.Slerp(_data.transform.rotation,targetRotation,8f * Time.deltaTime);
+    }
+    private void MoveTowardsWaypoint(Vector3 direction)
+    {
+        _data.transform.position +=direction.normalized * _hunter.MaxSpeed * Time.deltaTime;
+    }
+    private bool CheckActiveBoids()
+    {
+        Transform boidDetected = _hunter.BoidInVision(_visionRadius);
+
+        if (boidDetected == null || !_hunter.IsTbaReady)
+            return false;
+
+        stateMachine.ChangeState(FarmerState.Attack);
+        return true;
+    }
     [System.Serializable]
     public class PatrolData 
     {
@@ -119,7 +131,4 @@ public class PatrolState : State
         public Vector3 spawnAreaMin;
         public Vector3 spawnAreaMax;
     }
-
-
-
 }

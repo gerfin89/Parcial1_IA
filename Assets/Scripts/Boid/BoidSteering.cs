@@ -10,11 +10,11 @@ public class BoidSteering : Agent
     [SerializeField] private float maxSteering;
     [SerializeField] private float slowingDistance;
     [SerializeField] private float minDistance;
-    [SerializeField] private Agent _targetAgent;
     [SerializeField] private float detectionRadius;
     [SerializeField] private float baitDetectionRadius = 8f;
     [SerializeField] private float respawnDelay = 5f;
     [SerializeField] private float consumeInterval = 1f;
+    private Agent _targetAgent;
     public float ConsumeInterval => consumeInterval;
     public float RespawnDelay => respawnDelay;
 
@@ -33,6 +33,8 @@ public class BoidSteering : Agent
     [SerializeField, Range(0f, 3f)] private float cohesionWeight = 1f;
 
     private BoidHealth _health;
+    private Renderer[] _renderers;
+    private Canvas[] _canvases;
     private List<BoidSteering> _nearbyBoids = new List<BoidSteering>();
     private List<Bait> _nearbyBaits = new List<Bait>();
     private BoidSpawner _boidSpawner;
@@ -44,11 +46,20 @@ public class BoidSteering : Agent
     StateMachine _stateMachine;
     public int BoundaryCrossings { get; private set; }
     public bool IsRespawning { get; private set; }
+    public BoidHealth Health { get; private set; }
     public bool IsDown => _health !=null && _health.IsDown;
+
+    private void Awake()
+    {
+        Health = GetComponent<BoidHealth>();
+        _health = Health;
+        _renderers = GetComponentsInChildren<Renderer>(true);
+        _canvases = GetComponentsInChildren<Canvas>(true);
+    }
     private void Start()
     {
                
-        _health = GetComponent<BoidHealth>();
+       
         Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
         _velocity += randomDirection.normalized * maxSpeed;
 
@@ -108,7 +119,13 @@ public class BoidSteering : Agent
         }
         return bait != null;
     }
-    public Vector3 EvadeSteering() => Evade(_targetAgent) * evadeSteeringMultiplier;
+    public Vector3 EvadeSteering()
+    {
+        if (_targetAgent == null)
+            return Vector3.zero;
+
+        return Evade(_targetAgent) * evadeSteeringMultiplier;
+    }
     public Vector3 ArriveSteering(Transform bait) => Arrive(bait.position);
 
     public bool IsAtBait(Transform bait)
@@ -200,7 +217,7 @@ public class BoidSteering : Agent
 
     public Vector3 Flocking()
     {
-        _nearbyBoids.RemoveAll(b => b == null);
+       
         return CalculateSeparation(_nearbyBoids, separationRadius) * separationWeight
                 + CalculateAlignment(_nearbyBoids, alignmentRadius) * alignmentWeight
                 + CalculateCohesion(_nearbyBoids, cohesionRadius) * cohesionWeight;
@@ -216,11 +233,11 @@ public class BoidSteering : Agent
             if (item == null) continue;
             if (item == this) continue;
 
-            BoidHealth health = item.GetComponent<BoidHealth>();
+            BoidHealth health = item.Health;
 
             if (health != null && health.IsDown) continue;
 
-            if (Vector3.Distance(item.transform.position, transform.position) <= radius)
+            if ((item.transform.position - transform.position).sqrMagnitude <= radius * radius)
             {
                 desired += (item.transform.position - transform.position);
                 count++;
@@ -242,11 +259,11 @@ public class BoidSteering : Agent
             if (item == null) continue;
             if (item == this) continue;
 
-            BoidHealth health = item.GetComponent<BoidHealth>();
+            BoidHealth health = item.Health;
 
             if (health != null && health.IsDown) continue;
 
-            if (Vector3.Distance(item.transform.position, transform.position) <= radius)
+            if ((item.transform.position - transform.position).sqrMagnitude <= radius * radius)
             {
                 desired += item.Velocity;
                 count++;
@@ -266,12 +283,12 @@ public class BoidSteering : Agent
         {
             if (item == null) continue;
             if (item == this) continue;
-            
-            BoidHealth health = item.GetComponent<BoidHealth>();
+
+            BoidHealth health = item.Health;
 
             if (health != null && health.IsDown) continue;
 
-            if (Vector3.Distance(item.transform.position, transform.position) <= radius)
+            if ((item.transform.position - transform.position).sqrMagnitude <= radius * radius)
             {
                 desired += item.transform.position;
                 count++;
@@ -342,6 +359,12 @@ public class BoidSteering : Agent
 
     private void OnTriggerEnter(Collider other)
     {
+        FSM_Hunter hunter = other.GetComponentInParent<FSM_Hunter>();
+
+        if (hunter != null)
+        {
+            _targetAgent = hunter;
+        }
         BoidSteering otherBoid = other.GetComponentInParent<BoidSteering>();
 
         if (otherBoid != null && otherBoid != this && !_nearbyBoids.Contains(otherBoid))
@@ -354,12 +377,18 @@ public class BoidSteering : Agent
         if (bait != null && !_nearbyBaits.Contains(bait))
         {
             _nearbyBaits.Add(bait);
-            Debug.Log("Boid detectó un cebo: " + bait.name);
+            
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        FSM_Hunter hunter = other.GetComponentInParent<FSM_Hunter>();
+
+        if (hunter != null && _targetAgent == hunter)
+        {
+            _targetAgent = null;
+        }
         BoidSteering otherBoid = other.GetComponentInParent<BoidSteering>();
 
         if (otherBoid != null && otherBoid != this)
@@ -383,15 +412,17 @@ public class BoidSteering : Agent
 
     public void SetVisible(bool visible)
     {
-        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in _renderers)
+        {
+            if (renderer != null)
+                renderer.enabled = visible;
+        }
 
-        foreach (Renderer renderer in renderers)
-            renderer.enabled = visible;
-
-        Canvas[] canvases = GetComponentsInChildren<Canvas>();
-
-        foreach (Canvas canvas in canvases)
-            canvas.enabled = visible;
+        foreach (Canvas canvas in _canvases)
+        {
+            if (canvas != null)
+                canvas.enabled = visible;
+        }
     }
 
     public void UpdateStateText(string stateName)

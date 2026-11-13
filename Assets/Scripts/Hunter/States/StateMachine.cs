@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-
-
-
 public class StateMachine
 {
     public State currentState {  get; private set; }
@@ -17,7 +14,10 @@ public class StateMachine
 
     public void ChangeState(Enum key)
     {
-        State newState = states[key];
+        if (!states.TryGetValue(key, out State newState))
+        {
+            return;
+        }
 
         if (newState == currentState)
             return;

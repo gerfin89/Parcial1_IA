@@ -26,10 +26,5 @@ public class RestState : State
             stateMachine.ChangeState(FarmerState.Patrol);
             return;
         }
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
+    }  
 }

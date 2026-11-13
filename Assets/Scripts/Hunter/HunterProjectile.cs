@@ -6,7 +6,7 @@ public class HunterProjectile : MonoBehaviour
     [SerializeField] private float lifetime = 3f;
 
     private Vector3 direction;
-
+    
     public void Initialize(Transform target)
     {
         Vector3 targetPosition = target.position + Vector3.up * 0.5f;
@@ -23,6 +23,7 @@ public class HunterProjectile : MonoBehaviour
         transform.position += direction * speed * Time.deltaTime;
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
         BoidHealth health = other.GetComponentInParent<BoidHealth>();
@@ -34,4 +35,5 @@ public class HunterProjectile : MonoBehaviour
 
         Destroy(gameObject);
     }
+
 }

@@ -363,6 +363,8 @@ GameObject:
   - component: {fileID: 8278650209837708929}
   - component: {fileID: 7641386480748994089}
   - component: {fileID: 8530273742874522785}
+  - component: {fileID: 8274901736387292050}
+  - component: {fileID: 6181191131749554557}
   m_Layer: 0
   m_Name: Hunter
   m_TagString: Untagged
@@ -426,10 +428,6 @@ MonoBehaviour:
     gatherTime: 3
     boidSpawner: {fileID: 0}
   tba: 2
-  maxEnergy: 100
-  energyConsumption: 100
-  energyRecovery: 20
-  staminaBar: {fileID: 6646216862059269054}
   stateIcon: {fileID: 4147690969246292886}
   patrolIcon: {fileID: -587488619, guid: aa8765cf81ec94b48a5589d41702ef2f, type: 3}
   attackIcon: {fileID: -515505698, guid: aa8765cf81ec94b48a5589d41702ef2f, type: 3}
@@ -437,6 +435,8 @@ MonoBehaviour:
   restIcon: {fileID: -2116496937, guid: aa8765cf81ec94b48a5589d41702ef2f, type: 3}
   projectilePrefab: {fileID: 777665722862745343, guid: e3972ad9a66f58b428eab804291a95bd, type: 3}
   goatPen: {fileID: 0}
+  hunterEnergy: {fileID: 0}
+  hunterSensor: {fileID: 0}
 --- !u!54 &7641386480748994089
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -485,6 +485,34 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8274901736387292050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605779249918046612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f02336758ce28e14aa0a9ca1125094b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HunterEnergy
+  maxEnergy: 100
+  energyConsumption: 10
+  energyRecovery: 20
+  staminaBar: {fileID: 6646216862059269054}
+--- !u!114 &6181191131749554557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605779249918046612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9baf01c40dd66ff4a9fb6c6344825b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HunterSensor
 --- !u!1 &5302870810069150917
 GameObject:
   m_ObjectHideFlags: 0

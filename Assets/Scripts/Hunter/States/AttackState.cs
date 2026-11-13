@@ -49,99 +49,24 @@ public class AttackState : State
 
     public override void Update()
     {
-        _hunter.ConsumeEnergy();
-
-        if (_hunter.IsEnergyEmpty)
-        {
-            stateMachine.ChangeState(FarmerState.Rest);
-            return;
-        }
-
-        if (_data.target == null)
-        {
-            _data.target = _hunter.BoidInVision(_data.visionRadius);
-
-            if (_data.target == null)
-            {
-                Vector3 direction = _lastKnownPosition - _hunter.transform.position;
-                direction.y = 0f;
-
-                if (direction.sqrMagnitude > 0.01f)
-                {
-                    _hunter.transform.position += direction.normalized * Mathf.Min(_hunter.MaxSpeed * Time.deltaTime, direction.magnitude);
-
-                    _hunter.transform.forward = direction.normalized;
-                }
-
-                return;
-            }
-
-            _lastKnownPosition = _data.target.position;
-
-            BoidSteering newTargetBoid = _data.target.GetComponent<BoidSteering>();
-
-            if (newTargetBoid != null)
-            {
-                _targetBoundaryCrossings = newTargetBoid.BoundaryCrossings;
-            }
-        }
-
-        BoidSteering targetBoid = _data.target.GetComponent<BoidSteering>();
-
-        if (targetBoid != null &&
-            targetBoid.BoundaryCrossings > _targetBoundaryCrossings)
-        {
-            stateMachine.ChangeState(FarmerState.Patrol);
-            return;
-        }
-
-        Transform deadBoid = _hunter.FallendBoidInVision(_data.visionRadius);
-
-        if (deadBoid != null)
-        {
-            stateMachine.ChangeState(FarmerState.Gather);
-            return;
-        }
-
-        BoidHealth health = _data.target.GetComponent<BoidHealth>();
-
-        if (health != null && health.IsDown)
-        {
-            _data.target = _hunter.BoidInVision(_data.visionRadius);
-
-            if (_data.target != null)
-            {
-                _lastKnownPosition = _data.target.position;
-
-                BoidSteering nextBoid = _data.target.GetComponent<BoidSteering>();
-
-                if (nextBoid != null)
-                {
-                    _targetBoundaryCrossings = nextBoid.BoundaryCrossings;
-                }
-            }
-
-            return;
-        }
-
-        _lastKnownPosition = _data.target.position;
-
-        float distance = Vector3.Distance(_hunter.transform.position, _data.target.position);
-
-        if (distance <= _data.meleeAtackRadius)
-        {
-            PerformAttack(true);
-        }
-        else if (distance <= _data.rangeAttackRadius)
-        {
-            PerformAttack(false);
-        }
-        else
-        {
-            ChaseHunter();
-        }
+        if (CheckEnergy()) return;
+        if (CheckFallenBoids()) return;
+        if (!TryAcquireTarget()) return;
+        if (CheckTargetBoundary()) return;
+        if (CheckTargetHealth()) return;
+        HandleCombat();
     }
 
+    private bool CheckEnergy()
+    {
+        _hunter.ConsumeEnergy();
+
+        if (!_hunter.IsEnergyEmpty)
+            return false;
+
+        stateMachine.ChangeState(FarmerState.Rest);
+        return true;
+    }
     private void ChaseHunter()
     {
 
@@ -154,8 +79,7 @@ public class AttackState : State
         {
             float distance = Vector3.Distance(_hunter.transform.position,targetPosition);
 
-            float predictionTime = distance /
-                Mathf.Max(0.1f, _hunter.MaxSpeed + boid.Velocity.magnitude);
+            float predictionTime = distance / Mathf.Max(0.1f, _hunter.MaxSpeed + boid.Velocity.magnitude);
 
             targetPosition += boid.Velocity * predictionTime;
         }
@@ -169,7 +93,16 @@ public class AttackState : State
         
         _hunter.transform.forward = direction;
     }
+    private bool CheckFallenBoids()
+    {
+        Transform deadBoid = _hunter.FallendBoidInVision(_data.visionRadius);
 
+        if (deadBoid == null)
+            return false;
+
+        stateMachine.ChangeState(FarmerState.Gather);
+        return true;
+    }
     [System.Serializable]
     public class AttackData
     {
@@ -199,6 +132,89 @@ public class AttackState : State
         }
 
         _hunter.ResetTba();
+    }
+    private bool TryAcquireTarget()
+    {
+        if (_data.target != null)
+            return true;
+
+        _data.target = _hunter.BoidInVision(_data.visionRadius);
+
+        if (_data.target == null)
+        {
+            Vector3 direction = _lastKnownPosition - _hunter.transform.position;
+            direction.y = 0f;
+
+            if (direction.sqrMagnitude > 0.01f)
+            {
+                _hunter.transform.position += direction.normalized *Mathf.Min(_hunter.MaxSpeed * Time.deltaTime, direction.magnitude);
+
+                _hunter.transform.forward = direction.normalized;
+            }
+
+            return false;
+        }
+
+        _lastKnownPosition = _data.target.position;
+
+        BoidSteering newTargetBoid = _data.target.GetComponent<BoidSteering>();
+
+        if (newTargetBoid != null)
+            _targetBoundaryCrossings = newTargetBoid.BoundaryCrossings;
+
+        return true;
+    }
+    private bool CheckTargetBoundary()
+    {
+        BoidSteering targetBoid = _data.target.GetComponent<BoidSteering>();
+
+        if (targetBoid == null ||targetBoid.BoundaryCrossings <= _targetBoundaryCrossings)
+            return false;
+
+        stateMachine.ChangeState(FarmerState.Patrol);
+        return true;
+    }
+    private bool CheckTargetHealth()
+    {
+        BoidHealth health = _data.target.GetComponent<BoidHealth>();
+
+        if (health == null || !health.IsDown)
+            return false;
+
+        _data.target = _hunter.BoidInVision(_data.visionRadius);
+
+        if (_data.target != null)
+        {
+            _lastKnownPosition = _data.target.position;
+
+            BoidSteering nextBoid = _data.target.GetComponent<BoidSteering>();
+
+            if (nextBoid != null)
+            {
+                _targetBoundaryCrossings = nextBoid.BoundaryCrossings;
+            }
+        }
+
+        return true;
+    }
+    private void HandleCombat()
+    {
+        _lastKnownPosition = _data.target.position;
+
+        float distance = Vector3.Distance(_hunter.transform.position,_data.target.position);
+
+        if (distance <= _data.meleeAtackRadius)
+        {
+            PerformAttack(true);
+            return;
+        }
+
+        if (distance <= _data.rangeAttackRadius)
+        {
+            PerformAttack(false);
+        }
+
+        ChaseHunter();
     }
 
 

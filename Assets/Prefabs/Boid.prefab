@@ -54,7 +54,6 @@ MonoBehaviour:
   maxSteering: 5
   slowingDistance: 2
   minDistance: 0.5
-  _targetAgent: {fileID: 0}
   detectionRadius: 8
   baitDetectionRadius: 5
   respawnDelay: 5

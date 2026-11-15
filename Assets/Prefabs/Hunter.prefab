@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81bde4f1eaeafa948855e845d43edc06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FSM_Hunter
-  maxSpeed: 7
+  maxSpeed: 9
   dataPatrol:
     wayPoints:
     - {fileID: 0}
@@ -438,6 +438,7 @@ MonoBehaviour:
   goatPen: {fileID: 0}
   hunterEnergy: {fileID: 0}
   hunterSensor: {fileID: 0}
+  hunterMovement: {fileID: 0}
 --- !u!54 &7641386480748994089
 Rigidbody:
   m_ObjectHideFlags: 0

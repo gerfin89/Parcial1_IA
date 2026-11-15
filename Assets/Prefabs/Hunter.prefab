@@ -365,6 +365,7 @@ GameObject:
   - component: {fileID: 8530273742874522785}
   - component: {fileID: 8274901736387292050}
   - component: {fileID: 6181191131749554557}
+  - component: {fileID: 2603015338505515178}
   m_Layer: 0
   m_Name: Hunter
   m_TagString: Untagged
@@ -412,7 +413,7 @@ MonoBehaviour:
     transform: {fileID: 902537210762375514}
     wayPointCheckDistance: 1
     baitPrefab: {fileID: 98230039591851437, guid: 42309429fa851e6408534262c6cd5978, type: 3}
-    baitSpawnTime: 5
+    baitSpawnTime: 2.5
     maxBaits: 5
     spawnAreaMin: {x: 0, y: 0, z: 0}
     spawnAreaMax: {x: 0, y: 0, z: 0}
@@ -513,6 +514,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9baf01c40dd66ff4a9fb6c6344825b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HunterSensor
+--- !u!114 &2603015338505515178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605779249918046612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3d4d8c4198ff71459f92fafbd8e3ae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HunterMovement
+  maxSteering: 5
 --- !u!1 &5302870810069150917
 GameObject:
   m_ObjectHideFlags: 0

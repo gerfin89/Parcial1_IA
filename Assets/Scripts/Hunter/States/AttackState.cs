@@ -1,7 +1,5 @@
 using UnityEngine;
 using static PatrolState;
-
-
 public class AttackState : State
 {
    
@@ -9,10 +7,6 @@ public class AttackState : State
     public AttackData _data;
     private Vector3 _lastKnownPosition;
     private int _targetBoundaryCrossings;
-
-
-
-
     public AttackState(FSM_Hunter hunter, AttackData data, StateMachine stateMachine) : base(stateMachine)
     {
         _hunter = hunter;
@@ -20,7 +14,6 @@ public class AttackState : State
 
        
     }
-
     public override void Enter()
     {
         base.Enter();
@@ -39,14 +32,11 @@ public class AttackState : State
         _hunter.UpdateStateIcon(FarmerState.Attack);
         _hunter.ChangeColor(Color.red);        
     }
-
-
     public override void Exit()
     {
         _data.target = null;
         base.Exit();
     }
-
     public override void Update()
     {
         if (CheckEnergy()) return;
@@ -56,7 +46,6 @@ public class AttackState : State
         if (CheckTargetHealth()) return;
         HandleCombat();
     }
-
     private bool CheckEnergy()
     {
         _hunter.ConsumeEnergy();
@@ -69,29 +58,13 @@ public class AttackState : State
     }
     private void ChaseHunter()
     {
-
-
         BoidSteering boid = _data.target.GetComponent<BoidSteering>();
 
-        Vector3 targetPosition = _data.target.position;
+        if (boid == null)
+            return;
 
-        if (boid != null)
-        {
-            float distance = Vector3.Distance(_hunter.transform.position,targetPosition);
-
-            float predictionTime = distance / Mathf.Max(0.1f, _hunter.MaxSpeed + boid.Velocity.magnitude);
-
-            targetPosition += boid.Velocity * predictionTime;
-        }
-
-        targetPosition.y = _hunter.transform.position.y;
-
-        Vector3 direction =
-            (targetPosition - _hunter.transform.position).normalized;
-
-        _hunter.transform.position += direction * _hunter.MaxSpeed * Time.deltaTime;
-        
-        _hunter.transform.forward = direction;
+        Vector3 steering = _hunter.Movement.Pursuit(boid,_hunter.Velocity,_hunter.MaxSpeed);
+        _hunter.Movement.Move(_hunter.Velocity,steering,_hunter.MaxSpeed);
     }
     private bool CheckFallenBoids()
     {
@@ -112,7 +85,6 @@ public class AttackState : State
         public float visionRadius;
 
     }
-
     private void PerformAttack(bool isMelee)
     {
         if (!_hunter.IsTbaReady) return;

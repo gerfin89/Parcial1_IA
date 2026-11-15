@@ -33,6 +33,9 @@ public class FSM_Hunter : Agent
     public GoatPen GoatPen => goatPen;    
     [SerializeField] private HunterEnergy hunterEnergy;
     [SerializeField] private HunterSensor hunterSensor;
+    [SerializeField] private HunterMovement hunterMovement;
+
+    public HunterMovement Movement => hunterMovement;
     public bool IsEnergyEmpty => hunterEnergy.IsEnergyEmpty;
     public bool IsEnergyFull => hunterEnergy.IsEnergyFull;
     private StateMachine stateMachine;
@@ -60,6 +63,8 @@ public class FSM_Hunter : Agent
     {
         InitializeComponents();
         InitializeStateMachine();
+        if (hunterMovement == null)
+            hunterMovement = GetComponent<HunterMovement>();
     }
     private void InitializeComponents()
     {

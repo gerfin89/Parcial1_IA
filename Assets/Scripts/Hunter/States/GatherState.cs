@@ -58,11 +58,9 @@ public class GatherState : State
     }
     private void MoveTowardsTarget()
     {
-        Vector3 direction = _data.target.position - _hunter.transform.position;
-        direction.y = 0f;
+        Vector3 steering = _hunter.Movement.Seek(_data.target.position,_hunter.Velocity,_hunter.MaxSpeed);
 
-        _hunter.transform.position +=
-            direction.normalized * _hunter.MaxSpeed * Time.deltaTime;
+        _hunter.Movement.Move(_hunter.Velocity,steering,_hunter.MaxSpeed);
     }
     private void ProcessGathering()
     {

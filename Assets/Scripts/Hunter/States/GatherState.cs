@@ -1,5 +1,4 @@
 using UnityEngine;
-using static PatrolState;
 
 public class GatherState : State
 {
@@ -59,7 +58,6 @@ public class GatherState : State
     private void MoveTowardsTarget()
     {
         Vector3 steering = _hunter.Movement.Seek(_data.target.position,_hunter.Velocity,_hunter.MaxSpeed);
-
         _hunter.Movement.Move(_hunter.Velocity,steering,_hunter.MaxSpeed);
     }
     private void ProcessGathering()

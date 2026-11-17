@@ -26,12 +26,10 @@ public class PatrolState : State
         baitTimer = _data.baitSpawnTime;
                        
     }
-
     public override void Exit()
     {
         base.Exit();
     }
-
     public override void Update()
     {
         if (CheckFallenBoids()) return;

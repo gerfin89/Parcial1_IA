@@ -1,5 +1,5 @@
 using UnityEngine;
-using static PatrolState;
+
 public class AttackState : State
 {
    
@@ -10,9 +10,7 @@ public class AttackState : State
     public AttackState(FSM_Hunter hunter, AttackData data, StateMachine stateMachine) : base(stateMachine)
     {
         _hunter = hunter;
-        _data = data;
-
-       
+        _data = data;       
     }
     public override void Enter()
     {
@@ -69,7 +67,6 @@ public class AttackState : State
     private bool CheckFallenBoids()
     {
         Transform deadBoid = _hunter.FallendBoidInVision(_data.visionRadius);
-
         if (deadBoid == null)
             return false;
 
@@ -83,12 +80,10 @@ public class AttackState : State
         public float meleeAtackRadius;
         public float rangeAttackRadius;
         public float visionRadius;
-
     }
     private void PerformAttack(bool isMelee)
     {
         if (!_hunter.IsTbaReady) return;
-
         BoidHealth health = _data.target.GetComponent<BoidHealth>();
 
         if (health != null)
@@ -102,7 +97,6 @@ public class AttackState : State
                 _hunter.ShootProjectile(_data.target);
             }
         }
-
         _hunter.ResetTba();
     }
     private bool TryAcquireTarget()
@@ -120,7 +114,6 @@ public class AttackState : State
             if (direction.sqrMagnitude > 0.01f)
             {
                 _hunter.transform.position += direction.normalized *Mathf.Min(_hunter.MaxSpeed * Time.deltaTime, direction.magnitude);
-
                 _hunter.transform.forward = direction.normalized;
             }
 
@@ -128,7 +121,6 @@ public class AttackState : State
         }
 
         _lastKnownPosition = _data.target.position;
-
         BoidSteering newTargetBoid = _data.target.GetComponent<BoidSteering>();
 
         if (newTargetBoid != null)
@@ -139,7 +131,6 @@ public class AttackState : State
     private bool CheckTargetBoundary()
     {
         BoidSteering targetBoid = _data.target.GetComponent<BoidSteering>();
-
         if (targetBoid == null ||targetBoid.BoundaryCrossings <= _targetBoundaryCrossings)
             return false;
 
@@ -149,7 +140,6 @@ public class AttackState : State
     private bool CheckTargetHealth()
     {
         BoidHealth health = _data.target.GetComponent<BoidHealth>();
-
         if (health == null || !health.IsDown)
             return false;
 
@@ -166,13 +156,11 @@ public class AttackState : State
                 _targetBoundaryCrossings = nextBoid.BoundaryCrossings;
             }
         }
-
         return true;
     }
     private void HandleCombat()
     {
         _lastKnownPosition = _data.target.position;
-
         float distance = Vector3.Distance(_hunter.transform.position,_data.target.position);
 
         if (distance <= _data.meleeAtackRadius)
@@ -185,9 +173,6 @@ public class AttackState : State
         {
             PerformAttack(false);
         }
-
         ChaseHunter();
     }
-
-
 }
